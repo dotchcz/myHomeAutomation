@@ -1,11 +1,7 @@
 ﻿{
   "iisSettings": {
     "windowsAuthentication": false,
-    "anonymousAuthentication": true,
-    "iisExpress": {
-      "applicationUrl": "http://localhost:25708",
-      "sslPort": 44323
-    }
+    "anonymousAuthentication": true
   },
   "profiles": {
     "MyHomeAutomation.WebApi": {

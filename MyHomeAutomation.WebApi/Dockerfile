@@ -5,8 +5,8 @@ EXPOSE 443
 
 FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build
 WORKDIR /src
-COPY ["MyHomeAutomation.WebApi/MyHomeAutomation.WebApi.csproj", "MyHomeAutomation.WebApi/"]
-RUN dotnet restore "MyHomeAutomation.WebApi/MyHomeAutomation.WebApi.csproj"
+COPY ["MyHomeAutomation.WebApi.csproj", "MyHomeAutomation.WebApi/"]
+RUN dotnet restore "MyHomeAutomation.WebApi.csproj"
 COPY . .
 WORKDIR "/src/MyHomeAutomation.WebApi"
 RUN dotnet build "MyHomeAutomation.WebApi.csproj" -c Release -o /app/build
