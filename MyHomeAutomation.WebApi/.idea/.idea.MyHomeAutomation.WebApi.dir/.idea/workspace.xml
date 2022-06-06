@@ -8,7 +8,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="a1133292-929f-4371-a0eb-ace5cfd11a1d" name="Changes" comment="" />
+    <list default="true" id="a1133292-929f-4371-a0eb-ace5cfd11a1d" name="Changes" comment="Dockerfile fix">
+      <change beforePath="$PROJECT_DIR$/.idea/.idea.MyHomeAutomation.WebApi.dir/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.MyHomeAutomation.WebApi.dir/.idea/workspace.xml" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -89,8 +91,16 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1654420726395</updated>
-      <workItem from="1654420735560" duration="7892000" />
+      <workItem from="1654420735560" duration="8457000" />
     </task>
+    <task id="LOCAL-00001" summary="Dockerfile fix">
+      <created>1654507880544</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1654507880544</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -110,5 +120,7 @@
   <component name="VcsManagerConfiguration">
     <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
     <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="true" />
+    <MESSAGE value="Dockerfile fix" />
+    <option name="LAST_COMMIT_MESSAGE" value="Dockerfile fix" />
   </component>
 </project>
