@@ -10,7 +10,8 @@ import {MessageService} from "./message.service";
 })
 export class RelayService {
 
-    private baseURL = `http://192.168.0.3:5266/relays`
+    private baseURL = `http://83.208.43.6:5266/relays`
+    //private baseURL = `http://localhost:5266/relays`
 
     constructor(private http: HttpClient, private messageService: MessageService) {
     }
