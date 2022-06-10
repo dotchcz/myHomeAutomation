@@ -8,10 +8,10 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="a1133292-929f-4371-a0eb-ace5cfd11a1d" name="Changes" comment="fix sql server">
+    <list default="true" id="a1133292-929f-4371-a0eb-ace5cfd11a1d" name="Changes" comment="adjust">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.MyHomeAutomation.WebApi.dir/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.MyHomeAutomation.WebApi.dir/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Dockerfile" beforeDir="false" afterPath="$PROJECT_DIR$/Dockerfile" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../github_ssh/myHomeAutomation" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/appsettings.json" beforeDir="false" afterPath="$PROJECT_DIR$/appsettings.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../MyHomeAutomation.WebApp/src/app/relay.service.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../MyHomeAutomation.WebApp/src/app/relay.service.ts" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -60,6 +60,7 @@
     <property name="node.js.selected.package.eslint" value="(autodetect)" />
     <property name="node.js.selected.package.tslint" value="(autodetect)" />
     <property name="nodejs_package_manager_path" value="npm" />
+    <property name="ts.external.directory.path" value="$APPLICATION_HOME_DIR$/plugins/JavaScriptLanguage/jsLanguageServicesImpl/external" />
     <property name="vue.rearranger.settings.migration" value="true" />
   </component>
   <component name="RunManager" selected=".NET Launch Settings Profile.MyHomeAutomation.WebApi">
@@ -104,7 +105,7 @@
       <updated>1654420726395</updated>
       <workItem from="1654420735560" duration="8799000" />
       <workItem from="1654602187979" duration="1250000" />
-      <workItem from="1654621604738" duration="3117000" />
+      <workItem from="1654621604738" duration="6771000" />
     </task>
     <task id="LOCAL-00001" summary="Dockerfile fix">
       <created>1654507880544</created>
@@ -120,7 +121,28 @@
       <option name="project" value="LOCAL" />
       <updated>1654622223722</updated>
     </task>
-    <option name="localTasksCounter" value="3" />
+    <task id="LOCAL-00003" summary="new server">
+      <created>1654625956443</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1654625956443</updated>
+    </task>
+    <task id="LOCAL-00004" summary="adjust">
+      <created>1654629477714</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1654629477714</updated>
+    </task>
+    <task id="LOCAL-00005" summary="adjust">
+      <created>1654872185388</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1654872185390</updated>
+    </task>
+    <option name="localTasksCounter" value="6" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -152,6 +174,8 @@
     <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="true" />
     <MESSAGE value="Dockerfile fix" />
     <MESSAGE value="fix sql server" />
-    <option name="LAST_COMMIT_MESSAGE" value="fix sql server" />
+    <MESSAGE value="new server" />
+    <MESSAGE value="adjust" />
+    <option name="LAST_COMMIT_MESSAGE" value="adjust" />
   </component>
 </project>
