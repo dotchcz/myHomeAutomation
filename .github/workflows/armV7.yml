@@ -39,7 +39,7 @@ jobs:
       if: success()      
       run: |
           docker buildx build \
-            --platform linux/386,linux/amd64,linux/arm/v6,linux/arm/v7,linux/arm64,linux/ppc64le,linux/s390x \
+            --platform linux/arm/v7 \
             --output "type=image,push=true" \
             --tag latest \
             --file ./MyHomeAutomation.WebApi/Dockerfile.ArmV7 .
