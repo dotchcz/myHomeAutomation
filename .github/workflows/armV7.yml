@@ -38,4 +38,4 @@ jobs:
         --platform ${{ steps.prepare.outputs.docker_platform }} \        
         --tag ${{ steps.prepare.outputs.docker_image }}:${{ steps.prepare.outputs.version }} \        
         --output "type=image,push=true" \
-        --file ./MyHomeAutomation.WebApi/Dockerfile.ArmV7 . 
+        --file ./Dockerfile.ArmV7 ./MyHomeAutomation.WebApi
