@@ -37,9 +37,8 @@ jobs:
         echo "${{ secrets.GITHUB_TOKEN }}" | docker login ${DOCKER_REGISTRY} -u USERNAME --password-stdin          
     - name: Run Buildx (push image)      
       if: success()      
-      run: |        
-        docker buildx build \        
-        --platform ${{ steps.prepare.outputs.docker_platform }} \        
-        --tag ${{ steps.prepare.outputs.docker_image }}:${{ steps.prepare.outputs.version }} \        
-        --output "type=image,push=true" \
-        --file ./Dockerfile.ArmV7 ./MyHomeAutomation.WebApi
+      run: |
+          docker buildx build \
+            --platform linux/386,linux/amd64,linux/arm/v6,linux/arm/v7,linux/arm64,linux/ppc64le,linux/s390x \
+            --output "type=image,push=false" \
+            --file ./test/Dockerfile ./test
