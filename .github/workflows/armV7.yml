@@ -35,5 +35,5 @@ jobs:
         docker buildx build \        
         --platform ${{ steps.prepare.outputs.docker_platform }} \        
         --tag ${{ steps.prepare.outputs.docker_image }}:${{ steps.prepare.outputs.version }} \        
-        --file ./Dockerfile.ArmV7 \        
+        --file ./MyHomeAutomation.WebApi/Dockerfile.ArmV7 \        
         --output type=image,push=true .
