@@ -28,7 +28,7 @@ jobs:
     - name: Docker Login      
       if: success()      
       run: |        
-        echo "${GITHUB_TOKEN}" | docker login ${DOCKER_REGISTRY} -u USERNAME --password-stdin          
+        echo "${{ secrets.GITHUB_TOKEN }}" | docker login ${DOCKER_REGISTRY} -u USERNAME --password-stdin          
     - name: Run Buildx (push image)      
       if: success()      
       run: |        
