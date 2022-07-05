@@ -11,6 +11,7 @@ RUN echo $(ls ./../../)
 RUN echo $(ls /usr/share/dotnet/)
 RUN echo $(ls /usr/share/dotnet/host/)
 RUN echo $(ls /usr/share/dotnet/host/fxr)
+RUN echo $(ls /usr/share/dotnet/host/fxr/6.0.6)
 RUN echo $(ls /usr/share/dotnet/sdk)
 RUN echo $(dotnet --version)
 RUN dotnet restore
