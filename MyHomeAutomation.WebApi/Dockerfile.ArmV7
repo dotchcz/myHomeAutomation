@@ -5,7 +5,7 @@ WORKDIR /app
 
 # Copy csproj and download the dependencies listed in that file
 COPY ["./MyHomeAutomation.WebApi/MyHomeAutomation.WebApi.csproj", "./"]
-CMD /bin/bash ls
+RUN echo $(ls .)
 RUN dotnet restore -r linux-arm
 
 # Copy all files in the project folder
