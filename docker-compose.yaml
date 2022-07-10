@@ -1,0 +1,13 @@
+version: '3.4'
+
+services:
+  myhomeautomation.webapi:
+    image: myhomeautomationwebapi
+    build:
+      context: .
+      dockerfile: ./MyHomeAutomation.WebApi/Dockerfile.ArmV7
+  myhomeautomation.db:
+    image: myhomeautomationdb
+    build:
+      context: .
+      dockerfile: ./db/Dockerfile

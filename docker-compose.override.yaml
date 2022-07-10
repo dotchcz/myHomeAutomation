@@ -1,0 +1,21 @@
+version: '3.4'
+
+services:
+  myhomeautomation.webapi:
+    environment:
+      - ConnectionString_MyHomeAutomationConn=Server=myhomeautomation.db;Database=myHomeAutomation;Port=5432;User Id=postgres;Password=raspberry;
+    ports:
+      - "5266:5266"
+    networks:
+      - myhomeautomation-dev
+  myhomeautomation.db:
+    environment:
+      - POSTGRES_PASSWORD=raspberry
+    ports:
+      - "5432:5432"
+    networks:
+      - myhomeautomation-dev
+networks:
+  myhomeautomation-dev:
+    name: myhomeautomation-dev
+    
