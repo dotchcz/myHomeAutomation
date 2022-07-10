@@ -19,7 +19,12 @@ RUN dotnet restore "MyHomeAutomation.WebApi.csproj" # -r linux-arm
 # Copy all files in the project folder
 COPY . ./
 #RUN dotnet publish -c Release -o /app/published-app -r linux-arm
-RUN dotnet publish "MyHomeAutomation.WebApi.csproj" -c release -o /app/published-app -r linux-arm --self-contained false --no-restore
+RUN dotnet publish -c release -o /app -r linux-arm --self-contained false --no-restore
+
+RUN [ "cross-build-end" ]
+
+FROM redisfab/arm64v8-xbuild:bionic
+RUN [ "cross-build-start" ]
 
 RUN [ "cross-build-end" ]
 
