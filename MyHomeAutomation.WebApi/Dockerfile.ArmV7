@@ -1,6 +1,5 @@
-
-#FROM mcr.microsoft.com/dotnet/sdk:6.0.301-bullseye-slim-arm32v7 as build
-FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build
+FROM mcr.microsoft.com/dotnet/sdk:6.0.301-bullseye-slim-arm32v7 as build
+#FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build
 WORKDIR /app
 
 # Copy csproj and download the dependencies listed in that file
@@ -18,12 +17,18 @@ RUN dotnet restore
 # RUN dotnet restore # -r linux-arm
 
 # Copy all files in the project folder
-COPY . .
+COPY . ./
 #RUN dotnet publish -c Release -o /app/published-app -r linux-arm
-RUN dotnet publish "MyHomeAutomation.WebApi.csproj" -c release -o /app/published-app -r linux-arm --self-contained false --no-restore
+RUN dotnet publish -c release -o /app -r linux-arm --self-contained false --no-restore
+
+RUN [ "cross-build-end" ]
+
+FROM redisfab/arm64v8-xbuild:bionic
+RUN [ "cross-build-start" ]
 
 FROM mcr.microsoft.com/dotnet/aspnet:6.0-bullseye-slim-arm32v7 as runtime
 WORKDIR /app
 COPY --from=build /app/published-app /app
 
 ENTRYPOINT [ "dotnet", "/app/MyHomeAutomation.WebApi.dll" ]
+RUN [ "cross-build-end" ]
