@@ -1,0 +1,8 @@
+<h2>Relays</h2>
+<ul>
+    <li *ngFor="let relay of relays">
+        <a routerLink="/relay/detail/{{relay.id}}">
+            <span class="badge">{{relay.id}}</span> {{relay.name}} {{relay.active}}
+        </a>
+    </li>
+</ul>

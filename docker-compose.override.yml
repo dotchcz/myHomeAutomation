@@ -1,0 +1,27 @@
+version: '3.4'
+
+services:
+  northwindstore.app:
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=https://+:443;http://+:80
+      - ConnectionStrings__DB=Data Source=tcp:northwindstore.db,1433; Initial Catalog=Northwind; User ID=sa; Password=DevPass_1
+    ports:
+      - "80"
+      - "443"
+    volumes:
+      - ${APPDATA}/Microsoft/UserSecrets:/root/.microsoft/usersecrets:ro
+      - ${APPDATA}/ASP.NET/Https:/root/.aspnet/https:ro
+    networks:
+      - northwindstore-dev
+  northwindstore.db:
+    ports:
+      - "51433:1433"
+    volumes:
+     - /Users/jenda/Projects/Kubernetes/temp/sqldata:/var/opt/mssql/data
+    networks:
+      - northwindstore-dev
+
+networks:
+  northwindstore-dev:
+    name: northwindstore-dev

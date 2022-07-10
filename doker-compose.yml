@@ -1,0 +1,13 @@
+version: '3.4'
+
+services:
+  northwindstore.app:
+    image: myhomeautomationwebapi
+    build:
+      context: .
+      dockerfile: NorthwindStore.App/Dockerfile
+  northwindstore.db:
+    image: myhomeautomationdb
+    build:
+      context: ../labs/01/sql
+      dockerfile: Dockerfile

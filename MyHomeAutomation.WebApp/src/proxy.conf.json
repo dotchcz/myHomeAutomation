@@ -1,0 +1,7 @@
+{
+  "/relaysApi":{
+    "target": "http://83.208.43.6:5266/relays",
+    "secure": false,
+    "logLevel": "debug"
+  }
+}

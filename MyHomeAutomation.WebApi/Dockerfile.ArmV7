@@ -1,0 +1,15 @@
+FROM mcr.microsoft.com/dotnet/sdk:6.0-bullseye-slim-arm32v7 as build
+WORKDIR /app
+# Copy csproj and download the dependencies listed in that file
+COPY ["MyHomeAutomation.WebApi.csproj", ""]
+RUN dotnet restore
+
+# Copy all files in the project folder
+COPY . ./
+RUN dotnet publish -c Release -o /app/published-app -r linux-arm
+
+FROM mcr.microsoft.com/dotnet/aspnet:6.0-bullseye-slim-arm32v7 as runtime
+WORKDIR /app
+COPY --from=build /app/published-app /app
+
+ENTRYPOINT [ "dotnet", "/app/MyHomeAutomation.WebApi.dll" ]
