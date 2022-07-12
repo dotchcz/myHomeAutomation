@@ -4,12 +4,12 @@ FROM mcr.microsoft.com/dotnet/sdk:6.0-alpine as build
 WORKDIR /app
 # Copy csproj and download the dependencies listed in that file
 COPY ["./MyHomeAutomation.WebApi/MyHomeAutomation.WebApi.csproj", ""]
-RUN dotnet restore -r linux-arm
+RUN dotnet restore # -r linux-arm
 #RUN dotnet restore "./MyHomeAutomation.WebApi/MyHomeAutomation.WebApi.csproj" # -r linux-arm
 
 # Copy all files in the project folder
 COPY . ./
-RUN dotnet publish "./MyHomeAutomation.WebApi/MyHomeAutomation.WebApi.csproj" -c Release -o /app/published-app -r linux-arm
+RUN dotnet publish "./MyHomeAutomation.WebApi/MyHomeAutomation.WebApi.csproj" -c Release -o /app/published-app # -r linux-arm
 #RUN dotnet publish "./MyHomeAutomation.WebApi/MyHomeAutomation.WebApi.csproj" -c release -o /app/published-app -r linux-arm --self-contained false --no-restore
 
 FROM mcr.microsoft.com/dotnet/aspnet:6.0-bullseye-slim-arm32v7 as runtime
