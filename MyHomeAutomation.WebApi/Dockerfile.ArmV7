@@ -3,7 +3,7 @@
 FROM mcr.microsoft.com/dotnet/sdk:6.0-alpine as build
 WORKDIR /app
 # Copy csproj and download the dependencies listed in that file
-COPY ["./MyHomeAutomation.WebApi/MyHomeAutomation.WebApi.csproj", ""]
+COPY ["./MyHomeAutomation.WebApi/MyHomeAutomation.WebApi.csproj", "./"]
 RUN dotnet restore # -r linux-arm
 #RUN dotnet restore "./MyHomeAutomation.WebApi/MyHomeAutomation.WebApi.csproj" # -r linux-arm
 
