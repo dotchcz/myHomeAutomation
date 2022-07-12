@@ -1,5 +1,6 @@
 #FROM mcr.microsoft.com/dotnet/sdk:6.0.301-bullseye-slim-arm32v7 as build
-FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build
+#FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build
+FROM mcr.microsoft.com/dotnet/sdk:6.0-alpine as build
 WORKDIR /app
 # Copy csproj and download the dependencies listed in that file
 COPY ["./MyHomeAutomation.WebApi/MyHomeAutomation.WebApi.csproj", ""]
