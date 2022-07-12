@@ -4,22 +4,20 @@ on:
     branches: [ main ]  
 jobs:   
   build:    
-    runs-on: ubuntu-latest # ubuntu-18.04    
+    runs-on: ubuntu-latest
     env:      
-      DOCKER_REGISTRY: ghcr.io      
-      DOCKER_IMAGE: myhomeautomation/webapi      
+      DOCKER_REGISTRY: ghcr.io         
+      DOCKER_IMAGE: dotchcz/myhome-webapi      
       DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
       DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}  
       DOCKER_TARGET_PLATFORM: linux/arm/v7                 
     steps:    
     - name: Checkout the code       
-      uses: actions/checkout@v3          
-    - name: Set up QEMU
-      uses: docker/setup-qemu-action@v2
-      with:
-       platforms: 'arm32v7'
-    - name: Set up Docker Buildx
-      uses: docker/setup-buildx-action@v2
+      uses: actions/checkout@v3         
+    - name: Set up Docker Buildx      
+      uses: crazy-max/ghaction-docker-buildx@v1      
+      with:        
+        version: latest    
     - name: Prepare      
       if: success()      
       id: prepare      
@@ -33,9 +31,9 @@ jobs:
         echo "${{ secrets.GITHUB_TOKEN }}" | docker login ${DOCKER_REGISTRY} -u USERNAME --password-stdin          
     - name: Run Buildx (push image)      
       if: success()      
-      run: |
-          docker buildx build \
-            --platform linux/arm/v7 \
-            --output "type=image,push=true" \
-            --tag latest \
-            --file ./MyHomeAutomation.WebApi/Dockerfile.ArmV7 .
+      run: |        
+        docker buildx build \
+          --platform ${{ steps.prepare.outputs.docker_platform }} \
+          --tag ${{ steps.prepare.outputs.docker_image }}:${{ steps.prepare.outputs.version }} \
+          --file ./MyHomeAutomation.WebApi/Dockerfile.ArmV7 \
+          --output type=image,push=true .
