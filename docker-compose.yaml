@@ -10,7 +10,7 @@ services:
   myhomeautomation.webapp:
     image: myhomeautomationwebapp
     build:
-      context: ./MyHomeAutomation.WebApp/
+      context: .
       dockerfile: ./MyHomeAutomation.WebApp/Dockerfile
       
   myhomeautomation.db:
