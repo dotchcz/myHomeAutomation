@@ -1,7 +1,7 @@
 #stage 1
 FROM node:latest as node
 WORKDIR /app
-COPY . .
+COPY ./MyHomeAutomation.WebApp/ .
 RUN npm install
 RUN npm run build --prod
 #stage 2
