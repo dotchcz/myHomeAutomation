@@ -6,6 +6,13 @@ services:
     build:
       context: .
       dockerfile: ./MyHomeAutomation.WebApi/Dockerfile.ArmV7
+      
+  myhomeautomation.webapp:
+    image: myhomeautomationwebapp
+    build:
+      context: .
+      dockerfile: ./MyHomeAutomation.WebApp/Dockerfile
+      
   myhomeautomation.db:
     image: myhomeautomationdb
     build:

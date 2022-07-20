@@ -8,6 +8,11 @@ services:
       - "5266:5266"
     networks:
       - myhomeautomation-dev
+  myhomeautomation.webapp:
+    ports:
+      - "80:80"
+    networks:
+      - myhomeautomation-dev
   myhomeautomation.db:
     environment:
       - POSTGRES_PASSWORD=raspberry
