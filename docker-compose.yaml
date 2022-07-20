@@ -14,7 +14,5 @@ services:
       dockerfile: ./MyHomeAutomation.WebApp/Dockerfile
       
   myhomeautomation.db:
-    image: myhomeautomationdb
-    build:
-      context: .
-      dockerfile: ./db/Dockerfile
+    image: postgres
+    restart: always
