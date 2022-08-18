@@ -2,7 +2,7 @@
 <ul>
     <li *ngFor="let relay of relays">
         <a routerLink="/relay/detail/{{relay.id}}">
-            <span class="badge">{{relay.id}}</span> {{relay.name}} {{relay.active}}
+            <span class="badge">{{relay.id}}</span> {{relay.name}} {{relay.active}} {{relay.type}}
         </a>
     </li>
 </ul>

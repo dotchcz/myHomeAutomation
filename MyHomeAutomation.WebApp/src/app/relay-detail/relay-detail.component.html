@@ -2,6 +2,7 @@
     <h2>{{relay.name | uppercase}}</h2>
     <div><span>Id: </span>{{relay.id}}</div>
     <div><span>Name: </span>{{relay.name}}</div>
+    <div><span>Type: </span>{{relay.type}}</div>
     <div><span>Active: </span><select [(ngModel)]="relay.active" class="form-control">
         <option [ngValue]="false">false</option>
         <option [ngValue]="true">true</option>

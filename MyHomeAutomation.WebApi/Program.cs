@@ -112,7 +112,7 @@ app.MapPost("/relays",
 
             await dbContext.SaveChangesAsync();
 
-            await relayService.SetValue(relay.Ip, relay.Active);
+            await relayService.SetValue(relay.Ip, relay.Active, relay.Type);
 
             return Results.NoContent();
         })

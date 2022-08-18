@@ -11,7 +11,7 @@ import {Relay} from "../relay";
     styleUrls: ['./relay-detail.component.css']
 })
 export class RelayDetailComponent implements OnInit {
-    relay: Relay = new Relay(1,'',false);
+    relay: Relay = new Relay(1,'',false, 0);
     
     constructor(
         private route: ActivatedRoute,
@@ -30,8 +30,8 @@ export class RelayDetailComponent implements OnInit {
     }
 
     onSubmit() {
-        let data = new Relay(this.relay.id, "AAA", this.relay.active);
-        console.log(this.relay.id +  ', ' + this.relay.active);
+        let data = new Relay(this.relay.id, "AAA", this.relay.active, this.relay.type);
+        console.log(this.relay.id +  ', ' + this.relay.active + ', type:'+ this.relay.type);
         console.log(data);
         this.relayService.setValue(data)
             .subscribe(response => console.log(response))

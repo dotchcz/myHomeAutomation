@@ -14,4 +14,6 @@ public class Relay
     public  DateTime LastUpdate { get; set; }
 
     public string Ip { get; set; }
+
+    public int Type { get; set; }
 }
