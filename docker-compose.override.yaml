@@ -3,7 +3,7 @@ version: '3.4'
 services:
   myhomeautomation.webapi:
     environment:
-      - ConnectionString_MyHomeAutomationConn=Server=myhomeautomation.db;Database=myHomeAutomation;Port=5432;User Id=postgres;Password=raspberry;
+      - ConnectionStrings__MyHomeAutomationConn=Server=myhomeautomation.db;Database=myHomeAutomation;Port=5432;User Id=postgres;Password=raspberry;
     depends_on:
       - myhomeautomation.db
     restart: always
