@@ -9,8 +9,8 @@ import {Sensor} from "./sensor";
 })
 export class SensoryService {
 
-  //private baseURL = `http://178.72.196.140:5266/sensors`
-  private baseURL = `http://localhost:5266/sensors`
+  private baseURL = `http://178.72.196.140:5266/sensors`
+  //private baseURL = `http://localhost:5266/sensors`
   
   constructor(private http: HttpClient, private messageService: MessageService) { }
 
