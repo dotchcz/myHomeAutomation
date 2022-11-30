@@ -1,9 +1,13 @@
+using System.Diagnostics.Metrics;
 using Microsoft.EntityFrameworkCore;
 using MinimalApi.ApiModels;
 using MinimalApi.Models;
 using MyHomeAutomation.WebApi;
+using MyHomeAutomation.WebApi.ApiModels;
 using MyHomeAutomation.WebApi.Dto;
 using MyHomeAutomation.WebApi.Models;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -20,6 +24,7 @@ builder.Services.AddDbContext<MyHomeAutomationDbContext>(options =>
     options.UseNpgsql(builder.Configuration.GetConnectionString("MyHomeAutomationConn")));
 
 builder.Services.AddScoped<IRelayService, RelayService>();
+//builder.Services.AddHostedService<RegulatoryService>();
 builder.Services.AddHttpClient();
 
 var app = builder.Build();
@@ -51,6 +56,32 @@ app.MapGet("/temperatures",
                 })
             ).OrderByDescending(t => t.Created).ToListAsync(cancellationToken);
         return Results.Ok(result);
+    });
+
+app.MapGet("/sensors",
+    async (CancellationToken cancellationToken, MyHomeAutomationDbContext dbContext) =>
+    {
+        var res = new List<SensorResponse>();
+        var sensors = await dbContext.Sensors.ToListAsync(cancellationToken);
+        foreach (var sensor in sensors)
+        {
+            var t = dbContext.Temperatures.Where(t => t.SensorId == sensor.Id).ToList();
+            res.Add(new SensorResponse()
+            {
+                Id = sensor.Id,
+                Name = sensor.Name,
+                Value = t.MaxBy(t => t.Created).Value,
+                Created = t.MaxBy(t => t.Created).Created
+            });
+        }
+        return Results.Ok(res);
+    });
+
+app.MapGet("/sensors/{id:int}",
+    async (int id, CancellationToken cancellationToken, MyHomeAutomationDbContext dbContext) =>
+    {
+        var sensor = await dbContext.Sensors.FindAsync(id);
+        return sensor is null ? Results.NotFound() : Results.Ok(sensor);
     });
 
 app.MapGet("/temperatures/{id:int}",

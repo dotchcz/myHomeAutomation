@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -10,9 +11,10 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace MyHomeAutomation.WebApi.Migrations
 {
     [DbContext(typeof(MyHomeAutomationDbContext))]
-    partial class MyHomeAutomationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20221129215930_TemperaturesUnderSensoryMig")]
+    partial class TemperaturesUnderSensoryMig
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -141,7 +143,7 @@ namespace MyHomeAutomation.WebApi.Migrations
             modelBuilder.Entity("MinimalApi.Models.Temperature", b =>
                 {
                     b.HasOne("MyHomeAutomation.WebApi.Models.Sensor", "Sensor")
-                        .WithMany()
+                        .WithMany("Temperatures")
                         .HasForeignKey("SensorId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -166,6 +168,11 @@ namespace MyHomeAutomation.WebApi.Migrations
                     b.Navigation("Location");
 
                     b.Navigation("Sensor");
+                });
+
+            modelBuilder.Entity("MyHomeAutomation.WebApi.Models.Sensor", b =>
+                {
+                    b.Navigation("Temperatures");
                 });
 #pragma warning restore 612, 618
         }

@@ -19,7 +19,7 @@ public class RelayService : IRelayService
             return new Uri($"http://{ip}/cm?cmnd=Power%20" + (active ? "On" : "Off"));
         }
 
-        throw new ArgumentException($"Unknown type value {type}");
+        throw new ArgumentException($"RelayService: Unknown type value {type}");
     };
 
     public RelayService(HttpClient httpClient)

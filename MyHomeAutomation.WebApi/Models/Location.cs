@@ -1,6 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 
-namespace MinimalApi.Models;
+namespace MyHomeAutomation.WebApi.Models;
 
 public class Location
 {

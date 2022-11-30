@@ -1,4 +1,4 @@
-namespace MinimalApi.ApiModels;
+namespace MyHomeAutomation.WebApi.ApiModels;
 
 public class RelayRequest
 {

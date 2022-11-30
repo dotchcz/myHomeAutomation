@@ -1,1 +1,20 @@
-<p>sensors works!</p>
+<h2>Sensors</h2>
+
+<table class="table table-striped">
+    <thead>
+    <tr>
+        <th scope="col">#</th>
+        <th scope="col" sortable="name" >Name</th>
+        <th scope="col" sortable="value">Value</th>
+        <th scope="col" sortable="created">Created</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr *ngFor="let sensor of sensors">
+        <th scope="row">{{ sensor.id }}</th>
+        <td>{{ sensor.name }}</td>
+        <td>{{ sensor.value }} </td>
+        <td>{{ sensor.created }}</td>
+    </tr>
+    </tbody>
+</table>
