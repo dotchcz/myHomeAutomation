@@ -58,7 +58,7 @@ public class RegulatoryTask
             
 
             // if the temperature (back from accumulation) is higher than 35deg => turn the pump on
-            if (currTempAccuBack.Value >= 30)
+            if (currTempAccuBack.Value >= 29)
             {
                 // run the pump
                 pumpInRun = true;
@@ -70,7 +70,7 @@ public class RegulatoryTask
                     .MaxBy(t => t.Created);
                 
                 // if the temperature (output accumulation) is lower than 30deg => turn the pump off
-                if (currTempFloor?.Value >= 30)
+                if (currTempFloor?.Value >= 28)
                 {
                     pumpInRun = true;
                 }
