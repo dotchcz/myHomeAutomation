@@ -1,48 +1,27 @@
-using Microsoft.EntityFrameworkCore;
-
 namespace MyHomeAutomation.WebApi;
 
-public class RegulatoryService: IHostedService
+public class RegulatoryService : IHostedService
 {
     private readonly IServiceScopeFactory _serviceScopeFactory;
+    private RegulatoryTask _regulatoryTask;
 
     public RegulatoryService(IServiceScopeFactory serviceScopeFactory)
     {
         _serviceScopeFactory = serviceScopeFactory;
     }
-    
-    public async Task StartAsync(CancellationToken cancellationToken)
-    {
-        while (!cancellationToken.IsCancellationRequested)
-        {
-            using (var scope = _serviceScopeFactory.CreateScope())
-            {
-               var myHomeAutomationDbContext = scope.ServiceProvider.GetRequiredService<MyHomeAutomationDbContext>();
-                
-               // read data from sensory
-               var currTempAccu = await myHomeAutomationDbContext.Temperatures
-                   .Where(t=>t.Sensor.Name.Equals("temp:zpatecka"))
-                   .MaxAsync(t => t.Created, cancellationToken: cancellationToken);
-            
-               var currTempFloor = await myHomeAutomationDbContext.Temperatures
-                   .Where(t=>t.Sensor.Name.Equals("temp:podlahovka"))
-                   .MaxAsync(t => t.Created, cancellationToken: cancellationToken);
-            
-               // if the temperature (input accumulation) is higher than 45deg => turn the pump on
-               // if the temperature (output accumulation) is lower than 30def => turn the pump off
-               
-               Thread.Sleep(5000);
-            }
-        }
-        
-        
-        throw new NotImplementedException();
-    }
 
-    public Task StopAsync(CancellationToken cancellationToken)
+    public Task StartAsync(CancellationToken cancellationToken)
     {
-        Console.WriteLine("Service stopped");
+        _regulatoryTask = new RegulatoryTask(TimeSpan.FromMilliseconds(5000), _serviceScopeFactory);
+        _regulatoryTask.Start();
+        Console.WriteLine("Hello from the other side!");
+        
         return Task.CompletedTask;
     }
-}
 
+    public async Task StopAsync(CancellationToken cancellationToken)
+    {
+        Console.WriteLine("Service stopped");
+        await _regulatoryTask.Stop();
+    }
+}

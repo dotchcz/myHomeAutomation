@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -10,13 +11,14 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace MyHomeAutomation.WebApi.Migrations
 {
     [DbContext(typeof(MyHomeAutomationDbContext))]
-    partial class MyHomeAutomationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20221201162605_TemperaturesUnderSensoryMig100")]
+    partial class TemperaturesUnderSensoryMig100
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "6.0.11")
+                .HasAnnotation("ProductVersion", "6.0.5")
                 .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);

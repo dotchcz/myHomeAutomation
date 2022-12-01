@@ -10,4 +10,6 @@ public class Sensor
     
     [Required]
     public string Name { get; set; }
+
+    public virtual ICollection<Temperature> Temperatures { get; set; }
 }

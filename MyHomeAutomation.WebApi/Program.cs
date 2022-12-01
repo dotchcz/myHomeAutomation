@@ -21,10 +21,13 @@ builder.Services.AddCors(c =>
     }
 );
 builder.Services.AddDbContext<MyHomeAutomationDbContext>(options =>
-    options.UseNpgsql(builder.Configuration.GetConnectionString("MyHomeAutomationConn")));
+{
+    options.UseNpgsql(builder.Configuration.GetConnectionString("MyHomeAutomationConn"));
+    options.UseLazyLoadingProxies().UseNpgsql();
+});
 
 builder.Services.AddScoped<IRelayService, RelayService>();
-//builder.Services.AddHostedService<RegulatoryService>();
+builder.Services.AddHostedService<RegulatoryService>();
 builder.Services.AddHttpClient();
 
 var app = builder.Build();
@@ -74,11 +77,12 @@ app.MapGet("/sensors",
                 Created = t.MaxBy(t => t.Created).Created
             });
         }
+
         return Results.Ok(res);
     });
 
 app.MapGet("/sensors/{id:int}",
-    async (int id, CancellationToken cancellationToken, MyHomeAutomationDbContext dbContext) =>
+    async (int id, MyHomeAutomationDbContext dbContext) =>
     {
         var sensor = await dbContext.Sensors.FindAsync(id);
         return sensor is null ? Results.NotFound() : Results.Ok(sensor);
@@ -99,6 +103,8 @@ app.MapPost("/temperature",
         {
             Console.WriteLine($"Input: {requestTemperature.SensorId}, {requestTemperature.Value}");
 
+            dbContext.Temperatures.RemoveRange(dbContext.Temperatures.Where(t=>t.SensorId.Equals(requestTemperature.SensorId)).ToList());
+
             await dbContext.Temperatures.AddAsync(new Temperature()
             {
                 Created = DateTime.UtcNow,
@@ -113,11 +119,11 @@ app.MapPost("/temperature",
 
 app.MapGet("/relays",
         async (CancellationToken cancellationToken, MyHomeAutomationDbContext dbContext) =>
-            Results.Ok((await dbContext.Relays.ToListAsync(cancellationToken)).OrderBy(r=>r.Id)))
+            Results.Ok((await dbContext.Relays.ToListAsync(cancellationToken)).OrderBy(r => r.Id)))
     .WithName("GetRelays");
 
 app.MapGet("/relays/{id:int}",
-        async (int id, CancellationToken cancellationToken, MyHomeAutomationDbContext dbContext) =>
+        async (int id, MyHomeAutomationDbContext dbContext) =>
         {
             var result = await dbContext.Relays.FindAsync(id);
 
@@ -153,10 +159,6 @@ app.Run();
 
 public class MyHomeAutomationDbContext : DbContext
 {
-    protected override void OnModelCreating(ModelBuilder modelBuilder)
-    {
-    }
-
     public MyHomeAutomationDbContext(DbContextOptions<MyHomeAutomationDbContext> options) : base(options)
     {
     }

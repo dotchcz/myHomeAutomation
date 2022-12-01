@@ -10,11 +10,11 @@ public class SensorLocation
     
     [Required]
     public int SensorId { get; set; }
-    public Sensor Sensor { get; set; }
+    public virtual Sensor Sensor { get; set; }
     
     [Required]
     public int LocationId { get; set; }
-    public Location Location { get; set; }
+    public virtual Location Location { get; set; }
     
     [Required]
     public DateTime ValidSince { get; set; }

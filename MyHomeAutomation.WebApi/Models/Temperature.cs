@@ -13,8 +13,8 @@ public class Temperature
 
     [Required]
     public DateTime Created { get; set; }
-
-    [Required]
+    
     public int SensorId { get; set; }
-    public Sensor Sensor { get; set; }
+    
+    public virtual Sensor Sensor { get; set; }
 }
