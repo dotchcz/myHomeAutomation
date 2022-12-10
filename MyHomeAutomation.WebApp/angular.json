@@ -106,5 +106,7 @@
       }
     }
   },
-  "defaultProject": "MyHomeAutomation.WebApp"
+  "cli": {
+    "analytics": "2c674216-b8d7-4d73-9df7-53776f871e10"
+  }
 }
