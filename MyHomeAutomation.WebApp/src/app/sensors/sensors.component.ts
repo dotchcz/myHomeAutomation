@@ -11,11 +11,15 @@ import {SensoryService} from "../sensory.service";
 })
 export class SensorsComponent implements OnInit {
   sensors: Sensor[] = [];
+  interval: any;
   
   constructor(private location: Location, private sensoryService: SensoryService) { }
 
   ngOnInit(): void {
     this.getSensors();
+    this.interval = setInterval(() => {
+      this.getSensors();
+    }, 2000);
   }
 
   getSensors(): void{

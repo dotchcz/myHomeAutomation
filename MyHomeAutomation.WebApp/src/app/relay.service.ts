@@ -18,7 +18,7 @@ export class RelayService {
 
     getRelays(): Observable<Relay[]> {
         this.messageService.add('RelayService: fetched relays, ' + this.baseURL);
-        return this.http.get<Relay[]>(this.baseURL)
+        return this.http.get<Relay[]>(this.baseURL);
     }
 
     getRelay(id: number): Observable<Relay> {
@@ -28,6 +28,6 @@ export class RelayService {
 
     setValue(relay: Relay): Observable<any> {
         this.messageService.add('RelayService: setValue relay, new value: ' + relay.active + ', ' + this.baseURL);
-        return this.http.post(`${this.baseURL}`, relay)
+        return this.http.post(`${this.baseURL}`, relay);
     }
 }

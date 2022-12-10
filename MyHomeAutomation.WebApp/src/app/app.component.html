@@ -6,6 +6,9 @@
                <div class="collapse navbar-collapse" id="navbarNav">
                    <ul class="navbar-nav">
                        <li class="nav-item">
+                           <a aria-current="page" class="nav-link" routerLink="/dashboard" routerLinkActive="active">Dashboard</a>
+                       </li>
+                       <li class="nav-item">
                            <a aria-current="page" class="nav-link" routerLink="/sensors" routerLinkActive="active">Sensors</a>
                        </li>
                        <li class="nav-item">
@@ -18,7 +21,6 @@
        <br>
        <router-outlet></router-outlet>
        <br>
-       <hr>
        <app-messages></app-messages>
     </div> 
 </div>

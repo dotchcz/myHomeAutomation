@@ -3,6 +3,7 @@ export class Relay {
         public id: number,
         public name: string,
         public active: boolean,
-        public type: number) {
+        public type: number,
+        public lastUpdate: Date) {
     }
 }

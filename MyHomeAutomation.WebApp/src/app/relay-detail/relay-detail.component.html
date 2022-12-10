@@ -1,25 +1,10 @@
 <div *ngIf="relay">
     <h2>{{relay.name | uppercase}}</h2>
     
-    <div>
-        <span>Active: </span>
-        <select [(ngModel)]="relay.active" class="form-control">
-            <option [ngValue]="false">false</option>
-            <option [ngValue]="true">true</option>
-        </select>
-    </div>
-    <form (ngSubmit)="onSubmit()">
-        <button class="btn btn-danger" type="submit">Save</button>
-    </form>
-
     <ul class="list-group">
         <li class="list-group-item list-group-item-info d-flex justify-content-between align-items-center">
             ID
             <span class="badge badge-primary alert-danger badge-pill">{{relay.id}}</span>
-        </li>
-        <li class="list-group-item list-group-item-dark d-flex justify-content-between align-items-center">
-            Type
-            <span class="badge list-group-item-info badge-warning badge-pill">{{relay.type}}</span>
         </li>
         <li class="list-group-item list-group-item-info d-flex justify-content-between align-items-center">
             Active
@@ -28,6 +13,14 @@
         <li class="list-group-item list-group-item-info d-flex justify-content-between align-items-center">
             Set new value
             <input  type="checkbox" [checked]="relay.active" (change)="onChange()">
+        </li>
+        <li class="list-group-item list-group-item-info d-flex justify-content-between align-items-center">
+            LastUpdate
+            <span class="badge  list-group-item- alert-danger badge-pill">{{relay.lastUpdate}}</span>
+        </li>
+        <li class="list-group-item list-group-item-dark d-flex justify-content-between align-items-center">
+            Type
+            <span class="badge list-group-item-info badge-warning badge-pill">{{relay.type}}</span>
         </li>
     </ul>
     <br/>

@@ -12,6 +12,7 @@ import { SensorsComponent } from './sensors/sensors.component';
 import { SensorDetailComponent } from './sensor-detail/sensor-detail.component';
 import { RelayDetailComponent } from './relay-detail/relay-detail.component';
 import { RelaysComponent } from './relays/relays.component';
+import { DashboardComponent } from './dashboard/dashboard.component';
 
 @NgModule({
   imports: [
@@ -27,7 +28,8 @@ import { RelaysComponent } from './relays/relays.component';
     SensorsComponent,
     SensorDetailComponent,
     RelayDetailComponent,
-    RelaysComponent
+    RelaysComponent,
+    DashboardComponent
   ],
   bootstrap: [ AppComponent ],
   providers: [{provide: LocationStrategy, useClass: HashLocationStrategy}]

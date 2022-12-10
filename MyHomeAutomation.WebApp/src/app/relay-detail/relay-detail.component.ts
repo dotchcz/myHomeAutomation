@@ -11,7 +11,7 @@ import {Relay} from "../relay";
     styleUrls: ['./relay-detail.component.css']
 })
 export class RelayDetailComponent implements OnInit {
-    relay: Relay = new Relay(1, '', false, 0);
+    relay: Relay = new Relay(1, '', false, 0, new Date( Date.UTC(0,0,0,0,0,0)));
 
     constructor(
         private route: ActivatedRoute,

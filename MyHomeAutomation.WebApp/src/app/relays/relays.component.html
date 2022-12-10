@@ -1,8 +1,27 @@
 <h2>Relays</h2>
-<ul>
-    <li *ngFor="let relay of relays">
-        <a routerLink="/relay/detail/{{relay.id}}">
-            <span class="badge">{{relay.id}}</span> {{relay.name}} {{relay.active}} {{relay.type}}
-        </a>
-    </li>
-</ul>
+<table class="table table-striped">
+    <thead>
+    <tr>
+        <th scope="col">#</th>
+        <th class="col-1">Action</th>
+        <th>Name</th>
+        <th>LastUpdate</th>
+        <th>Active</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr *ngFor="let relay of relays">
+        <th scope="row">{{ relay.id }}</th>
+        <td>
+            <input  type="checkbox" [checked]="relay.active" (change)="onChange(relay)">
+        </td>
+        <td>
+            <a routerLink="/relay/detail/{{relay.id}}">
+                {{relay.name}}
+            </a>
+        </td>
+        <td>{{ relay.lastUpdate }} </td>
+        <td>{{ relay.active }} </td>
+    </tr>
+    </tbody>
+</table>
