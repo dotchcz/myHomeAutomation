@@ -1,14 +1,35 @@
 <div *ngIf="relay">
     <h2>{{relay.name | uppercase}}</h2>
-    <div><span>Id: </span>{{relay.id}}</div>
-    <div><span>Name: </span>{{relay.name}}</div>
-    <div><span>Type: </span>{{relay.type}}</div>
-    <div><span>Active: </span><select [(ngModel)]="relay.active" class="form-control">
-        <option [ngValue]="false">false</option>
-        <option [ngValue]="true">true</option>
-    </select></div>
+    
+    <div>
+        <span>Active: </span>
+        <select [(ngModel)]="relay.active" class="form-control">
+            <option [ngValue]="false">false</option>
+            <option [ngValue]="true">true</option>
+        </select>
+    </div>
     <form (ngSubmit)="onSubmit()">
         <button class="btn btn-danger" type="submit">Save</button>
     </form>
+
+    <ul class="list-group">
+        <li class="list-group-item list-group-item-info d-flex justify-content-between align-items-center">
+            ID
+            <span class="badge badge-primary alert-danger badge-pill">{{relay.id}}</span>
+        </li>
+        <li class="list-group-item list-group-item-dark d-flex justify-content-between align-items-center">
+            Type
+            <span class="badge list-group-item-info badge-warning badge-pill">{{relay.type}}</span>
+        </li>
+        <li class="list-group-item list-group-item-info d-flex justify-content-between align-items-center">
+            Active
+            <span class="badge  list-group-item- alert-danger badge-pill">{{relay.active}}</span>
+        </li>
+        <li class="list-group-item list-group-item-info d-flex justify-content-between align-items-center">
+            Set new value
+            <span class="badge  list-group-item- alert-success badge-pill">{{relay.active}}</span>
+        </li>
+    </ul>
+    <br/>
     <button type="button" class="btn btn-info" (click)="goBack()">Back</button>
 </div>
