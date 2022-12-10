@@ -28,6 +28,7 @@ builder.Services.AddDbContext<MyHomeAutomationDbContext>(options =>
 
 builder.Services.AddScoped<IRelayService, RelayService>();
 builder.Services.AddHostedService<RegulatoryService>();
+builder.Services.AddHostedService<InterrogationService>();
 builder.Services.AddHttpClient();
 
 var app = builder.Build();
@@ -103,7 +104,8 @@ app.MapPost("/temperature",
         {
             Console.WriteLine($"Input: {requestTemperature.SensorId}, {requestTemperature.Value}");
 
-            dbContext.Temperatures.RemoveRange(dbContext.Temperatures.Where(t=>t.SensorId.Equals(requestTemperature.SensorId)).ToList());
+            dbContext.Temperatures.RemoveRange(dbContext.Temperatures
+                .Where(t => t.SensorId.Equals(requestTemperature.SensorId)).ToList());
 
             await dbContext.Temperatures.AddAsync(new Temperature()
             {
