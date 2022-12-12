@@ -1,8 +1,8 @@
+#nullable enable
 namespace MyHomeAutomation.WebApi;
 
 public abstract class PeriodTaskBase
 {
-    private readonly TimeSpan _interval;
     private  Task? _timerTask;
     private readonly PeriodicTimer _periodicTimer;
     private readonly CancellationTokenSource _cts = new();

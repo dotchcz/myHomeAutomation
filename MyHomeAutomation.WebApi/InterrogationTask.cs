@@ -21,7 +21,7 @@ public class InterrogationTask : PeriodTaskBase
         {
             try
             {
-                var actualRelay = await relayService.GetRelayStatus(relay.Ip);
+                var actualRelay = await relayService.GetRelayStatus(relay.Ip).ConfigureAwait(false);
             
                 await relayService.SetValue(relay!.Ip, actualRelay.Status.Power.Equals("1"), 2);
             }
