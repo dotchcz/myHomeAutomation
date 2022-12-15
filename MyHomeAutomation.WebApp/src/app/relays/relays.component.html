@@ -20,7 +20,7 @@
                 {{relay.name}}
             </a>
         </td>
-        <td>{{ relay.lastUpdate }} </td>
+        <td>{{ relay.lastUpdate | date:'HH:mm:ss dd.MM.yyyy'}} </td>
         <td>{{ relay.active }} </td>
     </tr>
     </tbody>
