@@ -3,6 +3,7 @@ import {Location} from "@angular/common";
 
 import {Sensor} from "../sensor";
 import {SensoryService} from "../sensory.service";
+import {CommonService} from "../common.service";
 
 @Component({
   selector: 'app-sensors',
@@ -13,7 +14,7 @@ export class SensorsComponent implements OnInit {
   sensors: Sensor[] = [];
   interval: any;
   
-  constructor(private location: Location, private sensoryService: SensoryService) { }
+  constructor(private location: Location, private sensoryService: SensoryService, public commonService: CommonService) { }
 
   ngOnInit(): void {
     this.getSensors();

@@ -1,35 +1,38 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 
 import {Relay} from "../relay";
 import {RelayService} from "../relay.service";
+import {getTargetsByBuilderName} from "@angular/cdk/schematics";
+import {CommonService} from "../common.service";
 
 @Component({
-  selector: 'app-relays',
-  templateUrl: './relays.component.html',
-  styleUrls: ['./relays.component.css']
+    selector: 'app-relays',
+    templateUrl: './relays.component.html',
+    styleUrls: ['./relays.component.css']
 })
 export class RelaysComponent implements OnInit {
-  relays: Relay[] = [];
-  interval: any;
-  
-  constructor(private relayService: RelayService) { }
+    relays: Relay[] = [];
+    interval: any;
 
-  ngOnInit(): void {
-    this.getRelays();
-    this.interval = setInterval(() => {
-      this.getRelays();
-    }, 2000);
-  }
+    constructor(private relayService: RelayService, public commonService: CommonService) {
+    }
 
-  getRelays(): void{
-    this.relayService.getRelays()
-        .subscribe(relays=> this.relays = relays);
-  }
+    ngOnInit(): void {
+        this.getRelays();
+        this.interval = setInterval(() => {
+            this.getRelays();
+        }, 2000);
+    }
 
-  onChange(relay: Relay){
-    console.log('value changed for ' + relay.id);
-    relay.active = !relay.active;
-    this.relayService.setValue(relay)
-        .subscribe(response => console.log(response));
-  }
+    getRelays(): void {
+        this.relayService.getRelays()
+            .subscribe(relays => this.relays = relays);
+    }
+
+    onChange(relay: Relay) {
+        console.log('value changed for ' + relay.id);
+        relay.active = !relay.active;
+        this.relayService.setValue(relay)
+            .subscribe(response => console.log(response));
+    }
 }

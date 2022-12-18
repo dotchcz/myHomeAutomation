@@ -13,15 +13,25 @@
     <tr *ngFor="let relay of relays">
         <th scope="row">{{ relay.id }}</th>
         <td>
-            <input  type="checkbox" [checked]="relay.active" (change)="onChange(relay)">
+            <div>
+                <input class="form-check-input mt-1"  type="checkbox" [checked]="relay.active" (change)="onChange(relay)">
+            </div>
         </td>
         <td>
             <a routerLink="/relay/detail/{{relay.id}}">
                 {{relay.name}}
             </a>
         </td>
-        <td>{{ relay.lastUpdate | date:'HH:mm:ss dd.MM.yyyy'}} </td>
-        <td>{{ relay.active }} </td>
+        <td>
+            <div [class]="commonService.getLostCommunicationClass(relay.lastUpdate)">
+                {{ relay.lastUpdate | date:'HH:mm:ss dd.MM.yyyy'}}
+            </div>
+        </td>
+        <td>
+            <span class="badge bg-secondary" >
+                {{ relay.active }} 
+            </span> 
+        </td>
     </tr>
     </tbody>
 </table>

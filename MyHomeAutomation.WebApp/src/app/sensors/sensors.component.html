@@ -14,7 +14,11 @@
         <th scope="row">{{ sensor.id }}</th>
         <td>{{ sensor.name }}</td>
         <td>{{ sensor.value | number:'.1-3'}}&#8451; </td>
-        <td>{{ sensor.created | date:'HH:mm:ss dd.MM.yyyy'}}</td>
+        <td>
+            <div [class]="commonService.getLostCommunicationClass(sensor.created)">
+                {{ sensor.created | date:'HH:mm:ss dd.MM.yyyy'}}
+            </div>
+        </td>
     </tr>
     </tbody>
 </table>
