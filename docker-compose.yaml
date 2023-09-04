@@ -3,6 +3,9 @@ version: '3.4'
 services:
   myhomeautomation.webapi:
     image: myhomeautomationwebapi
+    logging:
+      options: 
+        max-size: "500m"
     build:
       context: .
       dockerfile: ./MyHomeAutomation.WebApi/Dockerfile
