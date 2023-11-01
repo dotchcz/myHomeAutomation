@@ -33,7 +33,7 @@ public class RegulatoryTask : PeriodTaskBase
 
 
             // if the temperature (back from accumulation) is higher than 35deg => turn the pump on
-            if (currTempAccuBack.Value >= 33)
+            if (currTempAccuBack.Value >= 29)
             {
                 // run the pump
                 pumpInRun = true;
