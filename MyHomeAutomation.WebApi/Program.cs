@@ -1,13 +1,9 @@
-using System.Diagnostics.Metrics;
 using Microsoft.EntityFrameworkCore;
 using MinimalApi.ApiModels;
 using MinimalApi.Models;
 using MyHomeAutomation.WebApi;
 using MyHomeAutomation.WebApi.ApiModels;
-using MyHomeAutomation.WebApi.Dto;
 using MyHomeAutomation.WebApi.Models;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
 
 var builder = WebApplication.CreateBuilder(args);
 

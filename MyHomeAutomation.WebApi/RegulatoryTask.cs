@@ -1,5 +1,3 @@
-using Microsoft.EntityFrameworkCore;
-
 namespace MyHomeAutomation.WebApi;
 
 public class RegulatoryTask : PeriodTaskBase
@@ -35,7 +33,7 @@ public class RegulatoryTask : PeriodTaskBase
 
 
             // if the temperature (back from accumulation) is higher than 35deg => turn the pump on
-            if (currTempAccuBack.Value >= 31)
+            if (currTempAccuBack.Value >= 33)
             {
                 // run the pump
                 pumpInRun = true;
@@ -46,8 +44,8 @@ public class RegulatoryTask : PeriodTaskBase
                     .Where(t => t.Sensor.Name.Equals("temp:podlahovka")).ToList()
                     .MaxBy(t => t.Created);
 
-                // if the temperature (output accumulation) is lower than 30deg => turn the pump off
-                if (currTempFloor?.Value >= 27)
+                // if the temperature (output accumulation) is lower than 29deg => turn the pump off
+                if (currTempFloor?.Value >= 29)
                 {
                     pumpInRun = true;
                 }

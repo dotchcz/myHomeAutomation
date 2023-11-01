@@ -1,5 +1,4 @@
 using MyHomeAutomation.WebApi.Dto;
-using MyHomeAutomation.WebApi.Models;
 using Newtonsoft.Json;
 
 namespace MyHomeAutomation.WebApi;
@@ -12,16 +11,12 @@ public class RelayService : IRelayService
 
     private readonly Func<string, bool, int, Uri> _urlMapping = (ip, active, type) =>
     {
-        if (type == 1)
+        return type switch
         {
-            return new Uri($"http://{ip}/LED=" + (active ? "ON" : "OFF"));
-        }
-        if (type == 2)
-        {
-            return new Uri($"http://{ip}/cm?cmnd=Power%20" + (active ? "On" : "Off"));
-        }
-
-        throw new ArgumentException($"RelayService: Unknown type value {type}");
+            1 => new Uri($"http://{ip}/LED=" + (active ? "ON" : "OFF")),
+            2 => new Uri($"http://{ip}/cm?cmnd=Power%20" + (active ? "On" : "Off")),
+            _ => throw new ArgumentException($"RelayService: Unknown type value {type}")
+        };
     };
 
     public RelayService(HttpClient httpClient, IServiceScopeFactory serviceScopeFactory)
