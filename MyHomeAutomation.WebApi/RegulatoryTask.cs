@@ -32,7 +32,7 @@ public class RegulatoryTask : PeriodTaskBase
                 .MaxBy(t => t.Created);
 
 
-            // if the temperature (back from accumulation) is higher than 35deg => turn the pump on
+            // if the temperature (back from accumulation) is higher than 29deg => turn the pump on
             if (currTempAccuBack.Value >= 29)
             {
                 // run the pump
