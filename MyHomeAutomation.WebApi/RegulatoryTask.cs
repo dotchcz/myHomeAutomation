@@ -6,7 +6,8 @@ public class RegulatoryTask : PeriodTaskBase
 {
     private readonly IServiceScopeFactory _serviceScopeFactory;
 
-    public RegulatoryTask(TimeSpan interval, IServiceScopeFactory serviceScopeFactory) : base(interval)
+    public RegulatoryTask(ILogger logger, TimeSpan interval, IServiceScopeFactory serviceScopeFactory) 
+        : base(logger, interval)
     {
         _serviceScopeFactory = serviceScopeFactory;
     }

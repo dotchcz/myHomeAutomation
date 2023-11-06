@@ -26,6 +26,7 @@ builder.Services.AddScoped<IRelayService, RelayService>();
 builder.Services.AddHostedService<RegulatoryService>();
 builder.Services.AddHostedService<InterrogationService>();
 builder.Services.AddHttpClient();
+builder.Services.AddLogging();
 
 var app = builder.Build();
 

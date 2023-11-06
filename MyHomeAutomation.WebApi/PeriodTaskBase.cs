@@ -3,12 +3,14 @@ namespace MyHomeAutomation.WebApi;
 
 public abstract class PeriodTaskBase
 {
+    private readonly ILogger _logger;
     private  Task? _timerTask;
     private readonly PeriodicTimer _periodicTimer;
     private readonly CancellationTokenSource _cts = new();
 
-    public PeriodTaskBase(TimeSpan interval)
+    public PeriodTaskBase(ILogger logger, TimeSpan interval)
     {
+        _logger = logger;
         _periodicTimer = new PeriodicTimer(interval);
     }
     
@@ -41,7 +43,7 @@ public abstract class PeriodTaskBase
         _cts.Cancel();
         await _timerTask;
         _cts.Dispose();
-        Console.WriteLine("PeriodTaskBase stopped");
+        _logger.LogInformation("PeriodTaskBase stopped");
     }
 
     protected abstract Task DoWhatYouNeed();

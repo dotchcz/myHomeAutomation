@@ -7,6 +7,7 @@ namespace MyHomeAutomation.WebApi;
 
 public class RelayService : IRelayService
 {
+    private readonly ILogger<RelayService> _logger;
     private readonly HttpClient _httpClient;
     private readonly IServiceScopeFactory _serviceScopeFactory;
 
@@ -20,8 +21,9 @@ public class RelayService : IRelayService
         };
     };
 
-    public RelayService(HttpClient httpClient, IServiceScopeFactory serviceScopeFactory)
+    public RelayService(ILogger<RelayService> logger, HttpClient httpClient, IServiceScopeFactory serviceScopeFactory)
     {
+        _logger = logger;
         _httpClient = httpClient;
         _serviceScopeFactory = serviceScopeFactory;
         _httpClient.Timeout = new TimeSpan(0,0,2);
@@ -31,8 +33,8 @@ public class RelayService : IRelayService
     {
         try
         {
-            //var uri = _urlMapping(ip, active, type);
-            //var res = await _httpClient.GetAsync(uri).ConfigureAwait(false);
+            var uri = _urlMapping(ip, active, type);
+            await _httpClient.GetAsync(uri).ConfigureAwait(false);
 
             var scope = _serviceScopeFactory.CreateScope();
             var context = scope.ServiceProvider.GetRequiredService<MyHomeAutomationDbContext>();
@@ -43,7 +45,7 @@ public class RelayService : IRelayService
         }
         catch (Exception ex)
         {
-            Console.WriteLine(ex.Message);
+            _logger.LogError(ex, ex.Message);
         }
     }
 
