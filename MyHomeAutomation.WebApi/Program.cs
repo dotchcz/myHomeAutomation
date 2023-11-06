@@ -54,7 +54,7 @@ app.MapGet("/temperatures",
                     LocationName = location.Location.Name,
                     Created = temperature.Created
                 })
-            ).OrderByDescending(t => t.Created).ToListAsync(cancellationToken);
+            ).OrderByDescending(t => t.Created).ToListAsync(cancellationToken).ConfigureAwait(false);
         return Results.Ok(result);
     });
 
@@ -65,7 +65,7 @@ app.MapGet("/sensors",
         var sensors = await dbContext.Sensors.ToListAsync(cancellationToken);
         foreach (var sensor in sensors)
         {
-            var t = dbContext.Temperatures.Where(t => t.SensorId == sensor.Id).ToList();
+            var t = await dbContext.Temperatures.Where(t => t.SensorId == sensor.Id).ToListAsync();
             res.Add(new SensorResponse()
             {
                 Id = sensor.Id,
@@ -81,14 +81,14 @@ app.MapGet("/sensors",
 app.MapGet("/sensors/{id:int}",
     async (int id, MyHomeAutomationDbContext dbContext) =>
     {
-        var sensor = await dbContext.Sensors.FindAsync(id);
+        var sensor = await dbContext.Sensors.FindAsync(id).ConfigureAwait(false);
         return sensor is null ? Results.NotFound() : Results.Ok(sensor);
     });
 
 app.MapGet("/temperatures/{id:int}",
     async (int id, MyHomeAutomationDbContext dbContext) =>
     {
-        var location = await dbContext.Locations.FindAsync(id);
+        var location = await dbContext.Locations.FindAsync(id).ConfigureAwait(false);
         return location is null ? Results.NotFound() : Results.Ok(location);
     });
 
@@ -100,30 +100,31 @@ app.MapPost("/temperature",
         {
             Console.WriteLine($"Input: {requestTemperature.SensorId}, {requestTemperature.Value}");
 
-            dbContext.Temperatures.RemoveRange(dbContext.Temperatures
-                .Where(t => t.SensorId.Equals(requestTemperature.SensorId)).ToList());
+            dbContext.Temperatures.RemoveRange(await dbContext.Temperatures
+                .Where(t => t.SensorId.Equals(requestTemperature.SensorId)).ToListAsync().ConfigureAwait(false));
 
             await dbContext.Temperatures.AddAsync(new Temperature()
             {
                 Created = DateTime.UtcNow,
                 SensorId = requestTemperature.SensorId,
                 Value = decimal.Parse(requestTemperature.Value)
-            }, cancellationToken);
+            }, cancellationToken).ConfigureAwait(false);
 
-            await dbContext.SaveChangesAsync(cancellationToken);
+            await dbContext.SaveChangesAsync(cancellationToken).ConfigureAwait(false);
             return Results.NoContent();
         })
     .WithName("PostTemperature");
 
 app.MapGet("/relays",
         async (CancellationToken cancellationToken, MyHomeAutomationDbContext dbContext) =>
-            Results.Ok((await dbContext.Relays.ToListAsync(cancellationToken)).OrderBy(r => r.Id)))
+            Results.Ok((await dbContext.Relays.ToListAsync(cancellationToken).ConfigureAwait(false))
+                .OrderBy(r => r.Id)))
     .WithName("GetRelays");
 
 app.MapGet("/relays/{id:int}",
         async (int id, MyHomeAutomationDbContext dbContext) =>
         {
-            var result = await dbContext.Relays.FindAsync(id);
+            var result = await dbContext.Relays.FindAsync(id).ConfigureAwait(false);
 
             return result is null ? Results.NotFound() : Results.Ok(result);
         })
@@ -139,7 +140,7 @@ app.MapPost("/relays",
             if (relay is null)
             {
                 relay = new Relay() {Id = relayRequest.Id, Name = relayRequest.Name};
-                await dbContext.Relays.AddAsync(relay);
+                await dbContext.Relays.AddAsync(relay).ConfigureAwait(false);
             }
 
             relay.Active = relayRequest.Active;

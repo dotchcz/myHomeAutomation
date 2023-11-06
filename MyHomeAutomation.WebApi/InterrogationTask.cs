@@ -1,3 +1,5 @@
+using Microsoft.EntityFrameworkCore;
+
 namespace MyHomeAutomation.WebApi;
 
 public class InterrogationTask : PeriodTaskBase
@@ -15,7 +17,7 @@ public class InterrogationTask : PeriodTaskBase
         var myHomeAutomationDbContext = scope.ServiceProvider.GetRequiredService<MyHomeAutomationDbContext>();
         var relayService = scope.ServiceProvider.GetRequiredService<IRelayService>();
 
-        var relays = myHomeAutomationDbContext.Relays.Where(r => r.Type == 2).ToList();
+        var relays =  await myHomeAutomationDbContext.Relays.Where(r => r.Type == 2).ToListAsync().ConfigureAwait(false);
 
         foreach (var relay in relays)
         {
@@ -23,7 +25,7 @@ public class InterrogationTask : PeriodTaskBase
             {
                 var actualRelay = await relayService.GetRelayStatus(relay.Ip).ConfigureAwait(false);
             
-                await relayService.SetValue(relay!.Ip, actualRelay.Status.Power.Equals("1"), 2);
+                await relayService.SetValue(relay!.Ip, actualRelay.Status.Power.Equals("1"), 2).ConfigureAwait(false);
             }
             catch (Exception e)
             {

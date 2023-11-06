@@ -1,3 +1,4 @@
+using Microsoft.EntityFrameworkCore;
 using MyHomeAutomation.WebApi.Dto;
 using Newtonsoft.Json;
 
@@ -30,12 +31,12 @@ public class RelayService : IRelayService
     {
         try
         {
-            var uri = _urlMapping(ip, active, type);
-            var res = await _httpClient.GetAsync(uri).ConfigureAwait(false);
+            //var uri = _urlMapping(ip, active, type);
+            //var res = await _httpClient.GetAsync(uri).ConfigureAwait(false);
 
             var scope = _serviceScopeFactory.CreateScope();
             var context = scope.ServiceProvider.GetRequiredService<MyHomeAutomationDbContext>();
-            var relay = context.Relays.First(r=>r.Ip.Equals(ip));
+            var relay = await context.Relays.FirstAsync(r=>r.Ip.Equals(ip)).ConfigureAwait(false);
             relay.Active = active;
             relay.LastUpdate = DateTime.UtcNow;
             await context.SaveChangesAsync();

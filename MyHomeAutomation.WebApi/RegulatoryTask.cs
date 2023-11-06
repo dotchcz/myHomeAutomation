@@ -1,3 +1,5 @@
+using Microsoft.EntityFrameworkCore;
+
 namespace MyHomeAutomation.WebApi;
 
 public class RegulatoryTask : PeriodTaskBase
@@ -16,9 +18,9 @@ public class RegulatoryTask : PeriodTaskBase
         var relayService = scope.ServiceProvider.GetRequiredService<IRelayService>();
 
         // read data from sensory
-        var currTempSource = myHomeAutomationDbContext.Temperatures
-            .Where(t => t.Sensor.Name.Equals("temp:horka")).ToList()
-            .MaxBy(t => t.Created);
+        var currTempSource = await myHomeAutomationDbContext.Temperatures
+            .OrderByDescending(t=>t.Created)
+            .FirstAsync(t => t.Sensor.Name.Equals("temp:horka")).ConfigureAwait(false);
 
         bool pumpInRun;
         if (currTempSource is null || currTempSource.Value < 50)
@@ -27,9 +29,9 @@ public class RegulatoryTask : PeriodTaskBase
         }
         else
         {
-            var currTempAccuBack = myHomeAutomationDbContext.Temperatures
-                .Where(t => t.Sensor.Name.Equals("temp:zpatecka")).ToList()
-                .MaxBy(t => t.Created);
+            var currTempAccuBack = await myHomeAutomationDbContext.Temperatures
+                .OrderByDescending(t => t.Created)
+                .FirstAsync(t => t.Sensor.Name.Equals("temp:zpatecka")).ConfigureAwait(false);
 
 
             // if the temperature (back from accumulation) is higher than 29deg => turn the pump on
@@ -40,9 +42,10 @@ public class RegulatoryTask : PeriodTaskBase
             }
             else
             {
-                var currTempFloor = myHomeAutomationDbContext.Temperatures
-                    .Where(t => t.Sensor.Name.Equals("temp:podlahovka")).ToList()
-                    .MaxBy(t => t.Created);
+                var currTempFloor = await myHomeAutomationDbContext.Temperatures
+                    .OrderByDescending(t=>t.Created)
+                    .FirstAsync(t => t.Sensor.Name.Equals("temp:podlahovka")).ConfigureAwait(false)
+                    ;
 
                 // if the temperature (output accumulation) is lower than 29deg => turn the pump off
                 if (currTempFloor?.Value >= 29)
@@ -56,7 +59,7 @@ public class RegulatoryTask : PeriodTaskBase
             }
         }
 
-        var relay = myHomeAutomationDbContext.Relays.First(r => r.Name.Equals("relay:pump"));
+        var relay = await myHomeAutomationDbContext.Relays.FirstAsync(r => r.Name.Equals("relay:pump")).ConfigureAwait(false);
         await relayService.SetValue(relay!.Ip, pumpInRun, 2);
     }
 }
