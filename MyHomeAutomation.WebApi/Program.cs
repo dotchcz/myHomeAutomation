@@ -97,9 +97,10 @@ app.MapPost("/temperature",
         async (
             TemperatureRequest requestTemperature,
             MyHomeAutomationDbContext dbContext,
-            CancellationToken cancellationToken) =>
+            CancellationToken cancellationToken, ILogger<Program> logger) =>
         {
-            Console.WriteLine($"Input: {requestTemperature.SensorId}, {requestTemperature.Value}");
+            //Console.WriteLine($"Input: SensorId:{requestTemperature.SensorId}, Value:{requestTemperature.Value}.");
+            logger.LogInformation($"Input: SensorId:{requestTemperature.SensorId}, Value:{requestTemperature.Value}.");
 
             dbContext.Temperatures.RemoveRange(await dbContext.Temperatures
                 .Where(t => t.SensorId.Equals(requestTemperature.SensorId)).ToListAsync().ConfigureAwait(false));

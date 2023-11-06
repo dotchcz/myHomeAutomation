@@ -16,14 +16,14 @@ public class RegulatoryService : IHostedService
     {
         _regulatoryTask = new RegulatoryTask(_logger,TimeSpan.FromMilliseconds(5000), _serviceScopeFactory);
         _regulatoryTask.Start();
-        Console.WriteLine("Hello from the other side!");
+        _logger.LogInformation("Hello from the other side!");
         
         return Task.CompletedTask;
     }
 
     public async Task StopAsync(CancellationToken cancellationToken)
     {
-        Console.WriteLine("Service stopped");
+        _logger.LogInformation("Service stopped");
         await _regulatoryTask.Stop();
     }
 }
