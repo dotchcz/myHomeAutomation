@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import { APP_INITIALIZER, NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { FormsModule, ReactiveFormsModule} from '@angular/forms';
 import { HashLocationStrategy, LocationStrategy } from '@angular/common';
@@ -13,6 +13,14 @@ import { SensorDetailComponent } from './sensor-detail/sensor-detail.component';
 import { RelayDetailComponent } from './relay-detail/relay-detail.component';
 import { RelaysComponent } from './relays/relays.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
+
+import { ConfigService } from './config.service';
+
+export function initializeApp(configService: ConfigService) {
+  return (): Promise<any> => {
+    return configService.loadConfig();
+  }
+}
 
 @NgModule({
   imports: [
@@ -32,6 +40,6 @@ import { DashboardComponent } from './dashboard/dashboard.component';
     DashboardComponent
   ],
   bootstrap: [ AppComponent ],
-  providers: [{provide: LocationStrategy, useClass: HashLocationStrategy}]
+  providers: [{provide: LocationStrategy, useClass: HashLocationStrategy}, ConfigService, { provide: APP_INITIALIZER, useFactory: initializeApp, deps: [ConfigService], multi: true }]
 })
 export class AppModule { }

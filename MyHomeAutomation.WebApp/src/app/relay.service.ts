@@ -4,6 +4,7 @@ import {HttpClient} from '@angular/common/http';
 
 import {Relay} from './relay';
 import {MessageService} from "./message.service";
+import { ConfigService } from './config.service'; // Import ConfigService
 
 @Injectable({
     providedIn: 'root'
@@ -13,7 +14,8 @@ export class RelayService {
     //private baseURL = `http://83.208.43.6:5266/relays`
     private baseURL = `http://178.72.196.140:5266/relays`
 
-    constructor(private http: HttpClient, private messageService: MessageService) {
+    constructor(private http: HttpClient, private messageService: MessageService, private configService: ConfigService) {
+        this.baseURL = `${this.configService.apiUrl}/relays`;
     }
 
     getRelays(): Observable<Relay[]> {

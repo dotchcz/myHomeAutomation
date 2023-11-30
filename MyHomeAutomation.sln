@@ -12,6 +12,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "deploy", "deploy", "{308A42
 		persistentVolumeClaim.yml = persistentVolumeClaim.yml
 		webApp.yml = webApp.yml
 		webApi.yml = webApi.yml
+		angular-config.yml = angular-config.yml
 	EndProjectSection
 EndProject
 Global

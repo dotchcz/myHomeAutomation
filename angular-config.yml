@@ -1,0 +1,9 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: angular-config
+data:
+  config.json: |-
+    {
+      "apiUrl": "http://myhomeautomation-webapi"
+    }

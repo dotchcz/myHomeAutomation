@@ -29,3 +29,14 @@ spec:
           image: dotchcz/myhomeautomation.webapp:latest
           ports:
             - containerPort: 80
+          volumeMounts:
+            - name: config-volume
+              mountPath: /usr/share/nginx/html/assets/config.json
+              subPath: config.json
+      volumes:
+        - name: config-volume
+          configMap:
+            name: angular-config
+            items:
+              - key: config.json
+                path: config.json

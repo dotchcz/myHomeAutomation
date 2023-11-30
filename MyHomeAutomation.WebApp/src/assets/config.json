@@ -1,0 +1,4 @@
+// src/assets/config.json
+{
+  "apiUrl": "http://178.72.196.140:5266"
+}
