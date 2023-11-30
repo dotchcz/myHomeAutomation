@@ -1,0 +1,43 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: myhomeautomation-db
+spec:
+  selector:
+    app: myhomeautomation-db
+  ports:
+    - protocol: TCP
+      port: 5432
+      targetPort: 5432
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: myhomeautomation-db
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: myhomeautomation-db
+  template:
+    metadata:
+      labels:
+        app: myhomeautomation-db
+    spec:
+      containers:
+        - name: db
+          image: postgres
+          ports:
+            - containerPort: 5432
+          env:
+            - name: POSTGRES_USER
+              value: "postgres"
+            - name: POSTGRES_PASSWORD
+              value: "raspberry"
+          volumeMounts:
+            - mountPath: /var/lib/postgresql/data
+              name: db-volume
+      volumes:
+        - name: db-volume
+          persistentVolumeClaim:
+            claimName: db-pvc
