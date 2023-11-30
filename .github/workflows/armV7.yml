@@ -26,8 +26,7 @@ jobs:
         context: .
         file: ./MyHomeAutomation.WebApi/Dockerfile.ArmV7
         push: true
-        tags: |
-          dotchcz/myhomeautomation.webapi:latest_arm
+        tags: dotchcz/myhomeautomation.webapi:latest_arm
           
     - name: Build and push Docker image WebApi
       uses: docker/build-push-action@v2
