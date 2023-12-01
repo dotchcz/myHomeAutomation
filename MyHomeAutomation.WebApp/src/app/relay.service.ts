@@ -10,9 +10,8 @@ import { ConfigService } from './config.service'; // Import ConfigService
     providedIn: 'root'
 })
 export class RelayService {
-
-    //private baseURL = `http://83.208.43.6:5266/relays`
-    private baseURL = `http://178.72.196.140:5266/relays`
+    
+    private baseURL = ``
 
     constructor(private http: HttpClient, private messageService: MessageService, private configService: ConfigService) {
         this.baseURL = `${this.configService.apiUrl}/relays`;

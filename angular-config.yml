@@ -5,5 +5,5 @@ metadata:
 data:
   config.json: |-
     {
-      "apiUrl": "http://myhomeautomation-webapi"
+      "apiUrl": "http://localhost:5266"
     }

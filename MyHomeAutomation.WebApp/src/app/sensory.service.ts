@@ -3,16 +3,19 @@ import {HttpClient} from "@angular/common/http";
 import {MessageService} from "./message.service";
 import {Observable} from "rxjs";
 import {Sensor} from "./sensor";
+import { ConfigService } from './config.service'; // Import ConfigService
 
 @Injectable({
   providedIn: 'root'
 })
 export class SensoryService {
 
-  private baseURL = `http://178.72.196.140:5266/sensors`
-  //private baseURL = `http://localhost:5266/sensors`
+  private baseURL = ``
   
-  constructor(private http: HttpClient, private messageService: MessageService) { }
+  
+  constructor(private http: HttpClient, private messageService: MessageService, private configService: ConfigService) {
+    this.baseURL = `${this.configService.apiUrl}/sensors`
+  }
 
   getSensors(): Observable<Sensor[]> {
     this.messageService.add('SensoryService: fetched sensors, ' + this.baseURL);
