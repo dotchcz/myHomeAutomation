@@ -2,7 +2,11 @@ apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   name: myhomeautomation-ingress
+  namespace: default
+  annotations:
+    kubernetes.io/ingress.class: nginx
 spec:
+  ingressClassName: nginx
   rules:
     - http:
         paths:
@@ -13,3 +17,10 @@ spec:
                 name: myhomeautomation-webapi
                 port:
                   number: 5266
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: myhomeautomation-webapp
+                port:
+                  number: 80

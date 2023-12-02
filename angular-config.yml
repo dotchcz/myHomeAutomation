@@ -5,5 +5,5 @@ metadata:
 data:
   config.json: |-
     {
-      "apiUrl": "http://localhost:5266"
+      "apiUrl": "http://20.241.182.73/api"
     }

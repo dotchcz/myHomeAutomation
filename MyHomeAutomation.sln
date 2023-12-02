@@ -9,11 +9,12 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "deploy", "deploy", "{308A42
 		docker-compose.ArmV7.yaml = docker-compose.ArmV7.yaml
 		docker-compose.override.yaml = docker-compose.override.yaml
 		db.yml = db.yml
-		persistentVolumeClaim.yml = persistentVolumeClaim.yml
+		db-postgres-pvc.yml = db-postgres-pvc.yml
 		webApp.yml = webApp.yml
 		webApi.yml = webApi.yml
 		angular-config.yml = angular-config.yml
 		reverse-proxy.yml = reverse-proxy.yml
+		db-copy.yml = db-copy.yml
 	EndProjectSection
 EndProject
 Global
