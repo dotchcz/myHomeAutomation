@@ -2,13 +2,13 @@ version: '3.4'
 
 services:
   myhomeautomation.webapi:
-    image: dotchcz/myhomeautomation.webapi:latest_arm
+    image: myhomeautomationwebapi
     build:
       context: .
       dockerfile: ./MyHomeAutomation.WebApi/Dockerfile.ArmV7
       
   myhomeautomation.webapp:
-    image: dotchcz/myhomeautomation.webapp:latest
+    image: myhomeautomationwebapp
     build:
       context: .
       dockerfile: ./MyHomeAutomation.WebApp/Dockerfile
