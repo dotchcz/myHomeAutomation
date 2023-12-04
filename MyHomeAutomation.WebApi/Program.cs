@@ -40,7 +40,7 @@ if (app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 app.UseCors(option => option.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod());
 
-app.MapGet("/api/temperatures",
+app.MapGet("/temperatures",
     async (CancellationToken cancellationToken, MyHomeAutomationDbContext dbContext) =>
     {
         var result = await dbContext.Temperatures
@@ -59,7 +59,7 @@ app.MapGet("/api/temperatures",
         return Results.Ok(result);
     });
 
-app.MapGet("/api/sensors",
+app.MapGet("/sensors",
     async (CancellationToken cancellationToken, MyHomeAutomationDbContext dbContext) =>
     {
         var res = new List<SensorResponse>();
@@ -79,21 +79,21 @@ app.MapGet("/api/sensors",
         return Results.Ok(res);
     });
 
-app.MapGet("/api/sensors/{id:int}",
+app.MapGet("/sensors/{id:int}",
     async (int id, MyHomeAutomationDbContext dbContext) =>
     {
         var sensor = await dbContext.Sensors.FindAsync(id).ConfigureAwait(false);
         return sensor is null ? Results.NotFound() : Results.Ok(sensor);
     });
 
-app.MapGet("/api/temperatures/{id:int}",
+app.MapGet("/temperatures/{id:int}",
     async (int id, MyHomeAutomationDbContext dbContext) =>
     {
         var location = await dbContext.Locations.FindAsync(id).ConfigureAwait(false);
         return location is null ? Results.NotFound() : Results.Ok(location);
     });
 
-app.MapPost("/api/temperature",
+app.MapPost("/temperature",
         async (
             TemperatureRequest requestTemperature,
             MyHomeAutomationDbContext dbContext,
@@ -117,13 +117,13 @@ app.MapPost("/api/temperature",
         })
     .WithName("PostTemperature");
 
-app.MapGet("/api/relays",
+app.MapGet("/relays",
         async (CancellationToken cancellationToken, MyHomeAutomationDbContext dbContext) =>
             Results.Ok((await dbContext.Relays.ToListAsync(cancellationToken).ConfigureAwait(false))
                 .OrderBy(r => r.Id)))
     .WithName("GetRelays");
 
-app.MapGet("/api/relays/{id:int}",
+app.MapGet("/relays/{id:int}",
         async (int id, MyHomeAutomationDbContext dbContext) =>
         {
             var result = await dbContext.Relays.FindAsync(id).ConfigureAwait(false);
@@ -132,7 +132,7 @@ app.MapGet("/api/relays/{id:int}",
         })
     .WithName("GetRelay");
 
-app.MapPost("/api/relays",
+app.MapPost("/relays",
         async (
             RelayRequest relayRequest,
             MyHomeAutomationDbContext dbContext,
