@@ -31,4 +31,8 @@ spec:
             - containerPort: 5266
           env:
             - name: ConnectionStrings__MyHomeAutomationConn
-              value: "Server=myhomeautomation-db;Database=myHomeAutomation;Port=5432;User Id=postgres;Password=raspberry;"
+              #value: "Server=myhomeautomation-db;Database=myHomeAutomation;Port=5432;User Id=postgres;Password=raspberry;"
+              valueFrom:
+                secretKeyRef:
+                  name: myhomeautomation-secret
+                  key: connectionstring
