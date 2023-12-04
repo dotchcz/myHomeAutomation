@@ -7,8 +7,8 @@ services:
     depends_on:
       - myhomeautomation.db
     logging:
+      driver: json-file
       options:
-        driver: json-file
         max-size: "50m"
     restart: always
     ports:
