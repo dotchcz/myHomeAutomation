@@ -3,15 +3,15 @@ version: '3.4'
 services:
   myhomeautomation.webapi:
     image: dotchcz/myhomeautomation.webapi:latest_arm
-    #build:
-    #  context: .
-    #  dockerfile: ./MyHomeAutomation.WebApi/Dockerfile.ArmV7
+    build:
+      context: .
+      dockerfile: ./MyHomeAutomation.WebApi/Dockerfile.ArmV7
       
   myhomeautomation.webapp:
     image: dotchcz/myhomeautomation.webapp:latest
-    #build:
-    #  context: .
-    #  dockerfile: ./MyHomeAutomation.WebApp/Dockerfile
+    build:
+      context: .
+      dockerfile: ./MyHomeAutomation.WebApp/Dockerfile
       
   myhomeautomation.db:
     image: postgres
