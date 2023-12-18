@@ -119,8 +119,12 @@ app.MapPost("/temperature",
 
 app.MapGet("/relays",
         async (CancellationToken cancellationToken, MyHomeAutomationDbContext dbContext) =>
-            Results.Ok((await dbContext.Relays.ToListAsync(cancellationToken).ConfigureAwait(false))
-                .OrderBy(r => r.Id)))
+            Results.Ok(
+                    await dbContext.Relays
+                        .OrderBy(r => r.Id)
+                        .ToListAsync(cancellationToken)
+                        .ConfigureAwait(false)
+                ))
     .WithName("GetRelays");
 
 app.MapGet("/relays/{id:int}",
