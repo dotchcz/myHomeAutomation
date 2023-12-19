@@ -1,6 +1,4 @@
 using Microsoft.EntityFrameworkCore;
-using MinimalApi.ApiModels;
-using MinimalApi.Models;
 using MyHomeAutomation.WebApi;
 using MyHomeAutomation.WebApi.ApiModels;
 using MyHomeAutomation.WebApi.Models;
@@ -95,7 +93,7 @@ app.MapGet("/temperatures/{id:int}",
 
 app.MapPost("/temperature",
         async (
-            TemperatureRequest requestTemperature,
+            SensorRequest requestTemperature,
             MyHomeAutomationDbContext dbContext,
             CancellationToken cancellationToken, ILogger<Program> logger) =>
         {
@@ -110,6 +108,29 @@ app.MapPost("/temperature",
                 Created = DateTime.UtcNow,
                 SensorId = requestTemperature.SensorId,
                 Value = decimal.Parse(requestTemperature.Value)
+            }, cancellationToken).ConfigureAwait(false);
+
+            await dbContext.SaveChangesAsync(cancellationToken).ConfigureAwait(false);
+            return Results.NoContent();
+        })
+    .WithName("PostTemperature");
+
+app.MapPost("/humidity",
+        async (
+            SensorRequest sensorRequest,
+            MyHomeAutomationDbContext dbContext,
+            CancellationToken cancellationToken, ILogger<Program> logger) =>
+        {
+            logger.LogInformation($"Input: SensorId:{sensorRequest.SensorId}, Value:{sensorRequest.Value}.");
+
+            dbContext.Humidity.RemoveRange(await dbContext.Humidity
+                .Where(t => t.SensorId.Equals(sensorRequest.SensorId)).ToListAsync().ConfigureAwait(false));
+
+            await dbContext.Humidity.AddAsync(new Humidity
+            {
+                Created = DateTime.UtcNow,
+                SensorId = sensorRequest.SensorId,
+                Value = decimal.Parse(sensorRequest.Value)
             }, cancellationToken).ConfigureAwait(false);
 
             await dbContext.SaveChangesAsync(cancellationToken).ConfigureAwait(false);
@@ -162,16 +183,20 @@ app.MapPost("/relays",
 
 app.Run();
 
-public class MyHomeAutomationDbContext : DbContext
+namespace MyHomeAutomation.WebApi
 {
-    public MyHomeAutomationDbContext(DbContextOptions<MyHomeAutomationDbContext> options) : base(options)
+    public class MyHomeAutomationDbContext : DbContext
     {
+        public MyHomeAutomationDbContext(DbContextOptions<MyHomeAutomationDbContext> options) : base(options)
+        {
+        }
+
+        public DbSet<Location> Locations => Set<Location>();
+        public DbSet<Temperature> Temperatures => Set<Temperature>();
+        public DbSet<Humidity> Humidity => Set<Humidity>();
+        public DbSet<Sensor> Sensors => Set<Sensor>();
+        public DbSet<SensorLocation> SensorLocations => Set<SensorLocation>();
+
+        public DbSet<Relay> Relays => Set<Relay>();
     }
-
-    public DbSet<Location> Locations => Set<Location>();
-    public DbSet<Temperature> Temperatures => Set<Temperature>();
-    public DbSet<Sensor> Sensors => Set<Sensor>();
-    public DbSet<SensorLocation> SensorLocations => Set<SensorLocation>();
-
-    public DbSet<Relay> Relays => Set<Relay>();
 }

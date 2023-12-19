@@ -1,6 +1,6 @@
-namespace MinimalApi.ApiModels;
+namespace MyHomeAutomation.WebApi.ApiModels;
 
-public class TemperatureRequest
+public class SensorRequest
 {
     public int SensorId { get; set; }
     public string Value { get; set; }

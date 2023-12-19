@@ -2,7 +2,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace MyHomeAutomation.WebApi.Models;
 
-public class Temperature
+public class Humidity
 {
     [Key]
     public int Id { get; set; }

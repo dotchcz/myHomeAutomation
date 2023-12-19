@@ -1,5 +1,4 @@
 using System.ComponentModel.DataAnnotations;
-using MinimalApi.Models;
 
 namespace MyHomeAutomation.WebApi.Models;
 
