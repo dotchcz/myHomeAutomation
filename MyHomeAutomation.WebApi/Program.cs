@@ -136,7 +136,7 @@ app.MapPost("/humidity",
             await dbContext.SaveChangesAsync(cancellationToken).ConfigureAwait(false);
             return Results.NoContent();
         })
-    .WithName("PostTemperature");
+    .WithName("PostHumidity");
 
 app.MapGet("/relays",
         async (CancellationToken cancellationToken, MyHomeAutomationDbContext dbContext) =>
