@@ -2,7 +2,7 @@ version: '3.4'
 
 services:
   myhomeautomation.webapi:
-    image: dotchcz/myhomeautomation.webapi:latest_arm
+    image: dotchcz/myhomeautomation.webapi:latest
     #image: myhomeautomationwebapi
     #build:
     #  context: .
