@@ -2,7 +2,9 @@ export class Sensor {
     constructor(
         public id: number,
         public name: string,
-        public value: number,
-        public created: Date) {
+        public valueTemp: number,
+        public valueHumidity: number,
+        public createdTemp: Date,
+        public createdHumidity: Date) {
     }
 }

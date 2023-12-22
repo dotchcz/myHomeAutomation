@@ -38,6 +38,8 @@ if (app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 app.UseCors(option => option.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod());
 
+
+/*
 app.MapGet("/temperatures",
     async (CancellationToken cancellationToken, MyHomeAutomationDbContext dbContext) =>
     {
@@ -55,22 +57,26 @@ app.MapGet("/temperatures",
                 })
             ).OrderByDescending(t => t.Created).ToListAsync(cancellationToken).ConfigureAwait(false);
         return Results.Ok(result);
-    });
+    });*/
 
 app.MapGet("/sensors",
     async (CancellationToken cancellationToken, MyHomeAutomationDbContext dbContext) =>
     {
         var res = new List<SensorResponse>();
         var sensors = await dbContext.Sensors.ToListAsync(cancellationToken);
+       
         foreach (var sensor in sensors)
         {
-            var t = await dbContext.Temperatures.Where(t => t.SensorId == sensor.Id).ToListAsync();
+            var t = await dbContext.Temperatures.Where(t => t.SensorId == sensor.Id).OrderBy(tt => tt.Created).FirstOrDefaultAsync();
+            var h = await dbContext.Humidity.Where(h => h.SensorId == sensor.Id).OrderBy(hh => hh.Created).FirstOrDefaultAsync();
             res.Add(new SensorResponse()
             {
                 Id = sensor.Id,
                 Name = sensor.Name,
-                Value = t.MaxBy(t => t.Created).Value,
-                Created = t.MaxBy(t => t.Created).Created
+                ValueTemp = t?.Value ?? 0,
+                CreatedTemp = t?.Created,
+                ValueHumidity = h?.Value ?? 0,
+                CreatedHumidity = h?.Created
             });
         }
 
@@ -141,11 +147,11 @@ app.MapPost("/humidity",
 app.MapGet("/relays",
         async (CancellationToken cancellationToken, MyHomeAutomationDbContext dbContext) =>
             Results.Ok(
-                    await dbContext.Relays
-                        .OrderBy(r => r.Id)
-                        .ToListAsync(cancellationToken)
-                        .ConfigureAwait(false)
-                ))
+                await dbContext.Relays
+                    .OrderBy(r => r.Id)
+                    .ToListAsync(cancellationToken)
+                    .ConfigureAwait(false)
+            ))
     .WithName("GetRelays");
 
 app.MapGet("/relays/{id:int}",

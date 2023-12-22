@@ -4,19 +4,39 @@
     <thead>
     <tr>
         <th scope="col">#</th>
-        <th scope="col" sortable="name" >Name</th>
-        <th scope="col" sortable="value">Value</th>
-        <th scope="col" sortable="created">Created</th>
+        <th scope="col" sortable="name">Name</th>
+        <th scope="col" sortable="value">Temperature</th>
+        <th scope="col" sortable="value">Humidity</th>
+        <th scope="col" sortable="created">LastUp Temp</th>
+        <th scope="col" sortable="created">LastUp Hum</th>
     </tr>
     </thead>
     <tbody>
     <tr *ngFor="let sensor of sensors">
         <th scope="row">{{ sensor.id }}</th>
         <td>{{ sensor.name }}</td>
-        <td>{{ sensor.value | number:'.1-3'}}&#8451; </td>
         <td>
-            <div [class]="commonService.getLostCommunicationClass(sensor.created)">
-                {{ sensor.created | date:'HH:mm:ss dd.MM.yyyy'}}
+            <div [class]="commonService.getLostCommunicationClass(sensor.createdTemp)">
+                {{ sensor.valueTemp | number:'.1-3' }}&#8451;
+            </div>
+        </td>
+        <td>
+            <div [class]="commonService.getLostCommunicationClass(sensor.createdHumidity)">
+                {{ sensor.valueHumidity | number:'.1-1' }}%
+            </div>
+        </td>
+        <td>
+            <div [class]="commonService.getLostCommunicationClass(sensor.createdTemp)">
+                {{ sensor.createdTemp | date:'HH:mm:ss dd.MM.yy' }}
+            </div>
+        </td>
+        <td>
+            <div [class]="commonService.getLostCommunicationClass(sensor.createdHumidity)">
+                <ng-container *ngIf="sensor.createdHumidity; else notAvailable">
+                    {{ sensor.createdHumidity | date:'HH:mm:ss dd.MM.yy' }}
+                </ng-container>
+                <!-- Fallback content -->
+                <ng-template #notAvailable>NaN</ng-template>
             </div>
         </td>
     </tr>
