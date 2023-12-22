@@ -6,7 +6,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "deploy", "deploy", "{308A42
 	ProjectSection(SolutionItems) = preProject
 		deploy.sh = deploy.sh
 		docker-compose.yaml = docker-compose.yaml
-		docker-compose.ArmV7.yaml = docker-compose.ArmV7.yaml
 		docker-compose.override.yaml = docker-compose.override.yaml
 		db.yml = db.yml
 		db-postgres-pvc.yml = db-postgres-pvc.yml

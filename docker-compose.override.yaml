@@ -2,6 +2,7 @@ version: '3.4'
 
 services:
   myhomeautomation.webapi:
+    image: dotchcz/myhomeautomation.webapi:latest
     environment:
       - ConnectionStrings__MyHomeAutomationConn=Server=myhomeautomation.db;Database=myHomeAutomation;Port=5432;User Id=postgres;Password=raspberry;
     depends_on:
@@ -16,6 +17,7 @@ services:
     networks:
       - myhomeautomation-dev
   myhomeautomation.webapp:
+    image: dotchcz/myhomeautomation.webapp:latest
     ports:
       - "80:80"
     restart: always
