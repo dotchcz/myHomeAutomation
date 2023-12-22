@@ -27,7 +27,11 @@
         </td>
         <td>
             <div [class]="commonService.getLostCommunicationClass(sensor.createdTemp)">
-                {{ sensor.createdTemp | date:'HH:mm:ss dd.MM.yy' }}
+                <ng-container *ngIf="sensor.createdTemp; else notAvailable">
+                    {{ sensor.createdTemp | date:'HH:mm:ss dd.MM.yy' }}
+                </ng-container>
+                <!-- Fallback content -->
+                <ng-template #notAvailable>NaN</ng-template>
             </div>
         </td>
         <td>
