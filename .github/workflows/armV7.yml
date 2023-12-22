@@ -30,15 +30,6 @@ jobs:
         tags: dotchcz/myhomeautomation.webapi:latest
         platforms: linux/amd64,linux/arm64/v8
 
-    - name: Build and push multi-platform Docker image WebApi ARM
-      uses: docker/build-push-action@v2
-      with:
-        context: .
-        file: ./MyHomeAutomation.WebApi/Dockerfile.ArmV7
-        push: true
-        tags: dotchcz/myhomeautomation.webapi:latest_arm
-        platforms: linux/arm/v7
-
     - name: Build and push multi-platform Docker image WebApp
       uses: docker/build-push-action@v2
       with:
