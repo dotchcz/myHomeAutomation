@@ -18,17 +18,18 @@ public class RegulatoryTask : PeriodTaskBase
         var myHomeAutomationDbContext = scope.ServiceProvider.GetRequiredService<MyHomeAutomationDbContext>();
         var relayService = scope.ServiceProvider.GetRequiredService<IRelayService>();
 
-        // read data from sensory
+        bool pumpInRun;
+        /*// read data from sensory
         var currTempSource = await myHomeAutomationDbContext.Temperatures
             .OrderByDescending(t=>t.Created)
             .FirstAsync(t => t.Sensor.Name.Equals("temp:horka")).ConfigureAwait(false);
 
-        bool pumpInRun;
+        
         if (currTempSource is null || currTempSource.Value < 50)
         {
             pumpInRun = false;
         }
-        else
+        else*/
         {
             var currTempAccuBack = await myHomeAutomationDbContext.Temperatures
                 .OrderByDescending(t => t.Created)
