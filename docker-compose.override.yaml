@@ -11,6 +11,7 @@ services:
       driver: json-file
       options:
         max-size: "50m"
+        max-file: "3"
     restart: always
     ports:
       - "5266:5266"
@@ -20,12 +21,22 @@ services:
     image: dotchcz/myhomeautomation.webapp:latest
     ports:
       - "80:80"
+    logging:
+      driver: json-file
+      options:
+        max-size: "50m"
+        max-file: "3"
     restart: always
     networks:
       - myhomeautomation-dev
   myhomeautomation.db:
     image: postgres:15
     restart: always
+    logging:
+      driver: json-file
+      options:
+        max-size: "50m"
+        max-file: "3"
     environment:
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=raspberry
