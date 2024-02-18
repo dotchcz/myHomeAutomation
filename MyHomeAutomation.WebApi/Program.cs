@@ -38,32 +38,14 @@ if (app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 app.UseCors(option => option.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod());
 
-
-/*
-app.MapGet("/temperatures",
-    async (CancellationToken cancellationToken, MyHomeAutomationDbContext dbContext) =>
-    {
-        var result = await dbContext.Temperatures
-            .Join(
-                dbContext.SensorLocations,
-                temperature => temperature.SensorId,
-                sensorLocation => sensorLocation.SensorId,
-                ((temperature, location) => new TemperatureResponse
-                {
-                    SensorName = temperature.Sensor.Name,
-                    Value = temperature.Value,
-                    LocationName = location.Location.Name,
-                    Created = temperature.Created
-                })
-            ).OrderByDescending(t => t.Created).ToListAsync(cancellationToken).ConfigureAwait(false);
-        return Results.Ok(result);
-    });*/
-
 app.MapGet("/sensors",
     async (CancellationToken cancellationToken, MyHomeAutomationDbContext dbContext) =>
     {
         var res = new List<SensorResponse>();
-        var sensors = await dbContext.Sensors.ToListAsync(cancellationToken);
+        var sensors = await dbContext
+            .Sensors
+            .OrderBy(s=>s.Id)
+            .ToListAsync(cancellationToken);
        
         foreach (var sensor in sensors)
         {
