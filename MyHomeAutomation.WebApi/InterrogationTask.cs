@@ -30,6 +30,8 @@ public class InterrogationTask : PeriodTaskBase
 
                 await relayService.SetValue(relay!.Ip, actualRelay.Status.Power.Equals("1"), 2).ConfigureAwait(false);
             }
+            catch (TaskCanceledException)
+            { }
             catch (Exception e)
             {
                 _logger.LogError(e, e.Message);

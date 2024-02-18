@@ -56,9 +56,9 @@ public class RelayService : IRelayService
     {
         var uri = new Uri($"http://{ip}/cm?cmnd=status%200");
         var res = await _httpClient.GetAsync(uri).ConfigureAwait(false);
-        
+    
         string responseBody = await res.Content.ReadAsStringAsync().ConfigureAwait(false);
-        
+    
         return JsonConvert.DeserializeObject<TasmotaRelayDto>(responseBody)!;
     }
 }
