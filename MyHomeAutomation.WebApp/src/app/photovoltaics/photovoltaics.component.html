@@ -2,7 +2,7 @@
 <h4>{{photovoltaics?.lastUpdate | date:'HH:mm:ss dd.MM.yyyy'}}</h4>
 <div class="container">
     <div class="row">
-        <div class="col-md-3">
+        <div class="col-12 col-sm-6 col-md-4 col-lg-3">
             <h4>PV Power</h4>
             <table class="table table-striped">
                 <thead>
@@ -12,7 +12,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr  *ngFor="let item of pvDictionary">
+                    <tr *ngFor="let item of pvDictionary">
                         <td>
                             {{item.key}}
                         </td>
@@ -23,7 +23,7 @@
                 </tbody>
             </table>
         </div>
-        <div class="col-md-3">
+        <div class="col-12 col-sm-6 col-md-4 col-lg-3">
             <h4>Batery</h4>
             <table class="table table-striped">
                 <thead>
@@ -33,7 +33,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr  *ngFor="let item of batteryDictionary">
+                    <tr *ngFor="let item of batteryDictionary">
                         <td>
                             {{item.key}}
                         </td>
@@ -44,7 +44,7 @@
                 </tbody>
             </table>
         </div>
-        <div class="col-md-3">
+        <div class="col-12 col-sm-6 col-md-4 col-lg-3">
             <h4>Grid</h4>
             <table class="table table-striped">
                 <thead>
@@ -54,7 +54,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr  *ngFor="let item of gridDictionary">
+                    <tr *ngFor="let item of gridDictionary">
                         <td>
                             {{item.key}}
                         </td>
@@ -65,7 +65,7 @@
                 </tbody>
             </table>
         </div>
-        <div class="col-md-3">
+        <div class="col-12 col-sm-6 col-md-4 col-lg-3">
             <h4>EV</h4>
             <table class="table table-striped">
                 <thead>
@@ -75,7 +75,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr  *ngFor="let item of evDictionary">
+                    <tr *ngFor="let item of evDictionary">
                         <td>
                             {{item.key}}
                         </td>
