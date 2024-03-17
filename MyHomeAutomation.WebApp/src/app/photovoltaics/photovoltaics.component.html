@@ -1,0 +1,89 @@
+<h2>Photovoltaics ({{photovoltaics?.lastUpdate | date:'HH:mm:ss dd.MM.yyyy'}})</h2>
+<div class="container">
+    <div class="row">
+        <div class="col-md-3">
+            <h4>PV Power</h4>
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th class="col-8">Name</th>
+                        <th class="col-4">Value</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr  *ngFor="let item of pvDictionary">
+                        <td>
+                            {{item.key}}
+                        </td>
+                        <td>
+                            {{item.value | safeFormat}}
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="col-md-3">
+            <h4>Batery</h4>
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th class="col-8">Name</th>
+                        <th class="col-4">Value</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr  *ngFor="let item of batteryDictionary">
+                        <td>
+                            {{item.key}}
+                        </td>
+                        <td>
+                            {{item.value | safeFormat}}
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="col-md-3">
+            <h4>Grid</h4>
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th class="col-8">Name</th>
+                        <th class="col-4">Value</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr  *ngFor="let item of gridDictionary">
+                        <td>
+                            {{item.key}}
+                        </td>
+                        <td>
+                            {{item.value | safeFormat}}
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="col-md-3">
+            <h4>EV</h4>
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th class="col-8">Name</th>
+                        <th class="col-4">Value</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr  *ngFor="let item of evDictionary">
+                        <td>
+                            {{item.key}}
+                        </td>
+                        <td>
+                            {{item.value | safeFormat}}
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

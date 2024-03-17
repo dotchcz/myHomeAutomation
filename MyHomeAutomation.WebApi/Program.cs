@@ -21,8 +21,10 @@ builder.Services.AddDbContext<MyHomeAutomationDbContext>(options =>
 });
 
 builder.Services.AddScoped<IRelayService, RelayService>();
+builder.Services.AddScoped<IInputRegisterService, InputRegisterService>();
 builder.Services.AddHostedService<RegulatoryService>();
 builder.Services.AddHostedService<InterrogationService>();
+builder.Services.AddHostedService<BoilerControlService>();
 builder.Services.AddHttpClient();
 builder.Services.AddLogging();
 
@@ -44,13 +46,15 @@ app.MapGet("/sensors",
         var res = new List<SensorResponse>();
         var sensors = await dbContext
             .Sensors
-            .OrderBy(s=>s.Id)
+            .OrderBy(s => s.Id)
             .ToListAsync(cancellationToken);
-       
+
         foreach (var sensor in sensors)
         {
-            var t = await dbContext.Temperatures.Where(t => t.SensorId == sensor.Id).OrderBy(tt => tt.Created).FirstOrDefaultAsync();
-            var h = await dbContext.Humidity.Where(h => h.SensorId == sensor.Id).OrderBy(hh => hh.Created).FirstOrDefaultAsync();
+            var t = await dbContext.Temperatures.Where(t => t.SensorId == sensor.Id).OrderBy(tt => tt.Created)
+                .FirstOrDefaultAsync();
+            var h = await dbContext.Humidity.Where(h => h.SensorId == sensor.Id).OrderBy(hh => hh.Created)
+                .FirstOrDefaultAsync();
             res.Add(new SensorResponse()
             {
                 Id = sensor.Id,
@@ -169,22 +173,24 @@ app.MapPost("/relays",
         })
     .WithName("PostRelays");
 
-app.Run();
-
-namespace MyHomeAutomation.WebApi
-{
-    public class MyHomeAutomationDbContext : DbContext
-    {
-        public MyHomeAutomationDbContext(DbContextOptions<MyHomeAutomationDbContext> options) : base(options)
+app.MapPost("/inputRegister",
+        async (
+            ReadInputRegisterRequest readInputRegister,
+            IInputRegisterService inputRegisterService) =>
         {
-        }
+            Console.WriteLine(
+                $"Přijato {readInputRegister.Values.Length} hodnot registrů, Offset {readInputRegister.Offset}");
+            await inputRegisterService.Update(readInputRegister.Offset, readInputRegister);
 
-        public DbSet<Location> Locations => Set<Location>();
-        public DbSet<Temperature> Temperatures => Set<Temperature>();
-        public DbSet<Humidity> Humidity => Set<Humidity>();
-        public DbSet<Sensor> Sensors => Set<Sensor>();
-        public DbSet<SensorLocation> SensorLocations => Set<SensorLocation>();
+            return Results.NoContent();
+        })
+    .WithName("InputRegister");
 
-        public DbSet<Relay> Relays => Set<Relay>();
-    }
-}
+app.MapGet("/photovoltaics", async (IInputRegisterService inputRegisterService) =>
+{
+    var photovoltaics = await inputRegisterService.GetPhotovoltaics();
+    return Results.Ok(photovoltaics);
+}).WithName("Photovoltaics");
+
+
+app.Run();

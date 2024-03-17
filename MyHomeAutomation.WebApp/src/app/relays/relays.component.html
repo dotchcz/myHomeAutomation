@@ -6,7 +6,6 @@
         <th class="col-1">Action</th>
         <th>Name</th>
         <th>LastUpdate</th>
-        <th>Active</th>
     </tr>
     </thead>
     <tbody>
@@ -26,11 +25,6 @@
             <div [class]="commonService.getLostCommunicationClass(relay.lastUpdate)">
                 {{ relay.lastUpdate | date:'HH:mm:ss dd.MM.yyyy'}}
             </div>
-        </td>
-        <td>
-            <span class="badge bg-secondary" >
-                {{ relay.active }} 
-            </span> 
         </td>
     </tr>
     </tbody>

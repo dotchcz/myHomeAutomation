@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using MyHomeAutomation.WebApi;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
@@ -11,9 +12,10 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace MyHomeAutomation.WebApi.Migrations
 {
     [DbContext(typeof(MyHomeAutomationDbContext))]
-    partial class MyHomeAutomationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240224194037_InputRegister")]
+    partial class InputRegister
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -44,28 +46,6 @@ namespace MyHomeAutomation.WebApi.Migrations
                     b.HasIndex("SensorId");
 
                     b.ToTable("Humidity");
-                });
-
-            modelBuilder.Entity("MyHomeAutomation.WebApi.Models.InputRegister", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
-
-                    b.Property<DateTimeOffset>("LastUpdate")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<int>("RegisterId")
-                        .HasColumnType("integer");
-
-                    b.Property<int>("Value")
-                        .HasColumnType("integer");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("InputRegisters");
                 });
 
             modelBuilder.Entity("MyHomeAutomation.WebApi.Models.Location", b =>

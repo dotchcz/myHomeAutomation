@@ -25,7 +25,18 @@ public abstract class PeriodTaskBase
         {
             while (await _periodicTimer.WaitForNextTickAsync(_cts.Token))
             {
-                await DoWhatYouNeed();
+                try
+                {
+                    await DoWhatYouNeed();
+                }
+                catch (TaskCanceledException)
+                {
+                    
+                }
+                catch (OperationCanceledException)
+                {
+                }
+                
             }
         }
         catch (OperationCanceledException)

@@ -15,6 +15,8 @@ import { RelaysComponent } from './relays/relays.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
 
 import { ConfigService } from './config.service';
+import { PhotovoltaicsComponent } from './photovoltaics/photovoltaics.component';
+import { SafeFormatPipe } from './safe-format.pipe';
 
 export function initializeApp(configService: ConfigService) {
   return (): Promise<any> => {
@@ -37,7 +39,9 @@ export function initializeApp(configService: ConfigService) {
     SensorDetailComponent,
     RelayDetailComponent,
     RelaysComponent,
-    DashboardComponent
+    DashboardComponent,
+    PhotovoltaicsComponent,
+    SafeFormatPipe
   ],
   bootstrap: [ AppComponent ],
   providers: [{provide: LocationStrategy, useClass: HashLocationStrategy}, ConfigService, { provide: APP_INITIALIZER, useFactory: initializeApp, deps: [ConfigService], multi: true }]
