@@ -134,11 +134,35 @@ app.MapGet("/relays",
         async (CancellationToken cancellationToken, MyHomeAutomationDbContext dbContext) =>
             Results.Ok(
                 await dbContext.Relays
-                    .OrderBy(r => r.Id)
+                    .Where(r=> !r.IsExtendingButton)
+                    .OrderByDescending(r => r.Name)
                     .ToListAsync(cancellationToken)
                     .ConfigureAwait(false)
             ))
     .WithName("GetRelays");
+
+app.MapGet("/relaysExtending",
+        async (CancellationToken cancellationToken, MyHomeAutomationDbContext dbContext) =>
+            Results.Ok(
+                await dbContext.Relays
+                    .Where(r=> r.IsExtendingButton)
+                    .OrderByDescending(r => r.Name)
+                    .ToListAsync(cancellationToken)
+                    .ConfigureAwait(false)
+            ))
+    .WithName("GetRelaysExtending");
+
+app.MapPost("/relaysExtending",
+        async (
+            RelayRequest relayRequest,
+            MyHomeAutomationDbContext dbContext,
+            IRelayService relayService) =>
+        {
+            await relayService.SetValueExtending(relayRequest);
+
+            return Results.NoContent();
+        })
+    .WithName("PostRelaysExtending");
 
 app.MapGet("/relays/{id:int}",
         async (int id, MyHomeAutomationDbContext dbContext) =>
@@ -161,13 +185,7 @@ app.MapPost("/relays",
                 relay = new Relay() {Id = relayRequest.Id, Name = relayRequest.Name};
                 await dbContext.Relays.AddAsync(relay).ConfigureAwait(false);
             }
-
-            relay.Active = relayRequest.Active;
-            relay.LastUpdate = DateTime.UtcNow;
-
-            await dbContext.SaveChangesAsync();
-
-            await relayService.SetValue(relay.Ip, relay.Active, relay.Type);
+            await relayService.SetValue(relay.Ip, relayRequest.Active, relay.Type);
 
             return Results.NoContent();
         })

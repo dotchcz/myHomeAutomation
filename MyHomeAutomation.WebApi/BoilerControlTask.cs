@@ -1,4 +1,5 @@
 using Microsoft.EntityFrameworkCore;
+using MyHomeAutomation.WebApi.Enums;
 
 namespace MyHomeAutomation.WebApi;
 
@@ -25,7 +26,7 @@ public class BoilerControlTask : PeriodTaskBase
         
         if (soc.ActualCapacity >= SoCMacCapacity)
         {
-            await relayService.SetValue(relay.Ip, true, 2);
+            await relayService.SetValue(relay.Ip, true, RelayType.Tasmota);
         }
         else
         {
@@ -33,7 +34,7 @@ public class BoilerControlTask : PeriodTaskBase
             soc = await inputRegisterService.GetSoc();
             if (soc.ActualCapacity < SoCMacCapacity)
             {
-                await relayService.SetValue(relay.Ip, false, 2); 
+                await relayService.SetValue(relay.Ip, false, RelayType.Tasmota); 
             }
         }
     }

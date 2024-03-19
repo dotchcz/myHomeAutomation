@@ -1,4 +1,5 @@
 using System.ComponentModel.DataAnnotations;
+using MyHomeAutomation.WebApi.Enums;
 
 namespace MyHomeAutomation.WebApi.Models;
 
@@ -15,5 +16,9 @@ public class Relay
 
     public string Ip { get; set; }
 
-    public int Type { get; set; }
+    public RelayType Type { get; set; }
+
+    public bool IsExtendingButton { get; set; }
+
+    public TimeSpan? Delay { get; set; }
 }

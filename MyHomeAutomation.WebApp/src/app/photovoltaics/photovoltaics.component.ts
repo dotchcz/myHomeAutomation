@@ -38,22 +38,24 @@ export class PhotovoltaicsComponent implements OnInit {
 
             this.photovoltaics = photovoltaics;
             
+            this.pvDictionary.push({key: 'powerDcTotal [W]', value: photovoltaics.powerDc1 + photovoltaics.powerDc2});
+            this.pvDictionary.push({key: 'powerDc1 [W]', value: photovoltaics.powerDc1});
+            this.pvDictionary.push({key: 'powerDc2 [W]', value: photovoltaics.powerDc2});
             this.pvDictionary.push({key: 'pvVoltage1 [V]', value: photovoltaics.pvVoltage1});
             this.pvDictionary.push({key: 'pvVoltage2 [V]', value: photovoltaics.pvVoltage2});
             this.pvDictionary.push({key: 'pvCurrent1 [A]', value: photovoltaics.pvCurrent1});
-            this.pvDictionary.push({key: 'pvCurrent2 [A]', value: photovoltaics.pvCurrent2});
-            this.pvDictionary.push({key: 'powerDc1 [W]', value: photovoltaics.powerDc1});
-            this.pvDictionary.push({key: 'powerDc2 [W]', value: photovoltaics.powerDc2});
+            this.pvDictionary.push({key: 'pvCurrent2 [A]', value: photovoltaics.pvCurrent2});          
             this.pvDictionary.push({key: 'solarEnergyToday [kWh]', value: photovoltaics.solarEnergyToday});
             this.pvDictionary.push({key: 'solarEnergyTotal [MWh]', value: photovoltaics.solarEnergyTotal});
 
             this.batteryDictionary.push({key: 'batteryCapacity [%]', value: photovoltaics.batteryCapacity});
+            this.batteryDictionary.push({key: 'batPowerCharge [W]', value: photovoltaics.batPowerCharge});
             this.batteryDictionary.push({key: 'batCurrentCharge [A]', value: photovoltaics.batCurrentCharge});
             this.batteryDictionary.push({key: 'batVoltageCharge [V]', value: photovoltaics.batVoltageCharge});
-            this.batteryDictionary.push({key: 'batPowerCharge [W]', value: photovoltaics.batPowerCharge});
             this.batteryDictionary.push({key: 'bmsConnectState', value: photovoltaics.bmsConnectState});
             this.batteryDictionary.push({key: 'temperatureBat [C]', value: photovoltaics.temperatureBat});
 
+            this.gridDictionary.push({key: 'actualCons [W]', value: photovoltaics.gridPower - photovoltaics.feedInPower});
             this.gridDictionary.push({key: 'gridPower [W]', value: photovoltaics.gridPower});
             this.gridDictionary.push({key: 'feedInPower [W]', value: photovoltaics.feedInPower});
             this.gridDictionary.push({key: 'gridVoltage [V]', value: photovoltaics.gridVoltage});

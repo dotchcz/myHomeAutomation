@@ -1,31 +1,42 @@
 <h2>Relays</h2>
+
+<div *ngFor="let relay of extendingRelays" class="mb-2">
+    <button type="button"
+        [ngClass]="relay.active ? commonService.getLostCommunicationClass(relay.lastUpdate) : 'btn btn-primary'"
+        (click)="onChangeExtending(relay)">
+        {{ relay.name }} <strong>{{ relay.active ? 'ON' : 'OFF' }}</strong>
+    </button>
+</div>
+
+
 <table class="table table-striped">
     <thead>
-    <tr>
-        <th scope="col">#</th>
-        <th class="col">Action</th>
-        <th>Name</th>
-        <th>LastUpdate</th>
-    </tr>
+        <tr>
+            <th scope="col">#</th>
+            <th class="col">Action</th>
+            <th>Name</th>
+            <th>LastUpdate</th>
+        </tr>
     </thead>
     <tbody>
-    <tr *ngFor="let relay of relays">
-        <th scope="row">{{ relay.id }}</th>
-        <td>
-            <div>
-                <input class="form-check-input mt-1"  type="checkbox" [checked]="relay.active" (change)="onChange(relay)">
-            </div>
-        </td>
-        <td>
-            <a routerLink="/relay/detail/{{relay.id}}">
-                {{relay.name}}
-            </a>
-        </td>
-        <td>
-            <div [class]="commonService.getLostCommunicationClass(relay.lastUpdate)">
-                {{ relay.lastUpdate | date:'HH:mm:ss dd.MM.yyyy'}}
-            </div>
-        </td>
-    </tr>
+        <tr *ngFor="let relay of relays">
+            <th scope="row">{{ relay.id }}</th>
+            <td>
+                <div>
+                    <input class="form-check-input mt-1 large-checkbox" type="checkbox" [checked]="relay.active"
+                        (change)="onChange(relay)">
+                </div>
+            </td>
+            <td>
+                <a routerLink="/relay/detail/{{relay.id}}">
+                    {{relay.name}}
+                </a>
+            </td>
+            <td>
+                <div [class]="commonService.getLostCommunicationClass(relay.lastUpdate)">
+                    {{ relay.lastUpdate | date:'HH:mm:ss dd.MM.yyyy'}}
+                </div>
+            </td>
+        </tr>
     </tbody>
 </table>

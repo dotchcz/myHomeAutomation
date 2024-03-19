@@ -34,7 +34,6 @@ export class Photovoltaics {
     lastUpdate: Date;
   
     constructor() {
-      // Inicializace proměnných s výchozími hodnotami
       this.solarEnergyToday = 0;
       this.solarEnergyTotal = 0;
       this.pvVoltage1 = 0;
