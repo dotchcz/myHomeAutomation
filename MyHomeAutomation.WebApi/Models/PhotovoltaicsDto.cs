@@ -19,6 +19,10 @@ public class PhotovoltaicsDto
     public float TemperatureBat { get; set; }
     public float BatteryCapacity { get; set; }
     public bool BmsConnectState { get; set; }
+    public float OutputEnergyCharge { get; set; }
+    public float InputEnergyCharge { get; set; }
+    public float OutputEnergyChargeToday { get; set; }
+    public float InputEnergyChargeToday { get; set; }
     
     // inverter
     public float GridVoltage { get; set; }
@@ -27,6 +31,7 @@ public class PhotovoltaicsDto
     public float TemperatureInverter { get; set; }
     public float FeedInPower { get; set; }
     public float FeedInEnergyTotal { get; set; }
+    public float ConsumeEnergyTotal { get; set; }
     public float OffGridPower { get; set; }
     public string RunMode { get; set; }
 

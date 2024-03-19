@@ -38,13 +38,21 @@ public enum InputRegisterEnum
     Feedin_powerMSB = 0x47,
     Feedin_energy_totalLSB = 0x48,
     Feedin_energy_totalMSB = 0x49,
+    Consum_energy_totalLSB =   0x004A ,
+    Consum_energy_totalMSB = 0x004B,
     Off_gridPower = 0x004E,
     SolarEnergyToday = 0x0096,
     SolarEnergyTotalLsb = 0x0094,
     SolarEnergyTotalMsb = 0x0095,
     TargetSoc = 0x011B,
     SocUpper = 0x011C,
-    SocLower = 0x011D
+    SocLower = 0x011D,
+    OutputEnergy_ChargeLSB = 0x001D,
+    OutputEnergy_ChargeMSB = 0x001E,
+    OutputEnergy_Charge_today = 0x0020,
+    InputEnergy_ChargeLSB = 0x0021,
+    InputEnergy_ChargeMSB = 0x0022,
+    InputEnergy_Charge_today = 0x0023
 }
 
 public enum RunModeDescription
@@ -100,13 +108,21 @@ public class InputRegisterService : IInputRegisterService
             {InputRegisterEnum.PowerToEVMSB, 1},
             {InputRegisterEnum.Feedin_powerLSB, 1},
             {InputRegisterEnum.Feedin_powerMSB, 1},
-            {InputRegisterEnum.Feedin_energy_totalLSB, 1},
-            {InputRegisterEnum.Feedin_energy_totalMSB, 1},
+            {InputRegisterEnum.Feedin_energy_totalLSB, .01f},
+            {InputRegisterEnum.Feedin_energy_totalMSB, .01f},
+            {InputRegisterEnum.Consum_energy_totalLSB, .01f},
+            {InputRegisterEnum.Consum_energy_totalMSB, .01f},
             {InputRegisterEnum.Off_gridPower, 1},
             {InputRegisterEnum.SolarEnergyToday, .1f},
             {InputRegisterEnum.SolarEnergyTotalLsb, .1f},
             {InputRegisterEnum.SolarEnergyTotalMsb, .1f},
             {InputRegisterEnum.RunMode, 1}, // enum
+            {InputRegisterEnum.OutputEnergy_ChargeLSB, .1f},
+            {InputRegisterEnum.OutputEnergy_ChargeMSB, .1f},
+            {InputRegisterEnum.OutputEnergy_Charge_today, .1f},
+            {InputRegisterEnum.InputEnergy_ChargeLSB, .1f},
+            {InputRegisterEnum.InputEnergy_ChargeMSB, .1f},
+            {InputRegisterEnum.InputEnergy_Charge_today, .1f},
         };
 
     public InputRegisterService(MyHomeAutomationDbContext dbContext)
@@ -223,18 +239,23 @@ public class InputRegisterService : IInputRegisterService
                     break;
                 case (int) InputRegisterEnum.PowerToEVLSB:
                 case (int) InputRegisterEnum.PowerToEVMSB:
-                    result.PowerToEv = 
+                    result.PowerToEv =
                         GetValue(raw, InputRegisterEnum.PowerToEVLSB) + GetValue(raw, InputRegisterEnum.PowerToEVMSB);
                     break;
                 case (int) InputRegisterEnum.Feedin_powerLSB:
                 case (int) InputRegisterEnum.Feedin_powerMSB:
-                    result.FeedInPower = 
-                        GetValue(raw, InputRegisterEnum.Feedin_powerLSB) + GetValue(raw, InputRegisterEnum.Feedin_powerMSB);
+                    result.FeedInPower = GetCombinedValue(raw, InputRegisterEnum.Feedin_powerLSB,
+                        InputRegisterEnum.Feedin_powerMSB);
                     break;
                 case (int) InputRegisterEnum.Feedin_energy_totalLSB:
                 case (int) InputRegisterEnum.Feedin_energy_totalMSB:
-                    result.FeedInEnergyTotal = 
-                        GetValue(raw, InputRegisterEnum.Feedin_energy_totalLSB) + GetValue(raw, InputRegisterEnum.Feedin_energy_totalMSB);
+                    result.FeedInEnergyTotal = GetCombinedValue(raw, InputRegisterEnum.Feedin_energy_totalLSB,
+                        InputRegisterEnum.Feedin_energy_totalMSB);
+                    break;
+                case (int) InputRegisterEnum.Consum_energy_totalLSB:
+                case (int) InputRegisterEnum.Consum_energy_totalMSB:
+                    result.ConsumeEnergyTotal = GetCombinedValue(raw, InputRegisterEnum.Consum_energy_totalLSB,
+                        InputRegisterEnum.Consum_energy_totalMSB);
                     break;
                 case (int) InputRegisterEnum.Off_gridPower:
                     result.OffGridPower = GetValue(raw, InputRegisterEnum.Off_gridPower);
@@ -244,17 +265,44 @@ public class InputRegisterService : IInputRegisterService
                     break;
                 case (int) InputRegisterEnum.SolarEnergyTotalLsb:
                 case (int) InputRegisterEnum.SolarEnergyTotalMsb:
-                    result.SolarEnergyTotal = 
-                        GetValue(raw, InputRegisterEnum.SolarEnergyTotalLsb) + GetValue(raw, InputRegisterEnum.SolarEnergyTotalMsb);
+                    result.SolarEnergyTotal = GetCombinedValue(raw, InputRegisterEnum.SolarEnergyTotalLsb,
+                        InputRegisterEnum.SolarEnergyTotalMsb);
                     break;
                 case (int) InputRegisterEnum.RunMode:
                     result.RunMode = GetEnumValue(raw, InputRegisterEnum.RunMode, typeof(RunModeDescription));
+                    break;
+                case (int) InputRegisterEnum.InputEnergy_Charge_today:
+                    result.InputEnergyChargeToday = GetValue(raw, InputRegisterEnum.InputEnergy_Charge_today);
+                    break;
+                case (int) InputRegisterEnum.OutputEnergy_Charge_today:
+                    result.OutputEnergyChargeToday = GetValue(raw, InputRegisterEnum.OutputEnergy_Charge_today);
+                    break;
+                case (int) InputRegisterEnum.InputEnergy_ChargeLSB:
+                case (int) InputRegisterEnum.InputEnergy_ChargeMSB:
+                    result.InputEnergyCharge = GetCombinedValue(raw, InputRegisterEnum.InputEnergy_ChargeLSB,
+                        InputRegisterEnum.InputEnergy_ChargeMSB);
+                    break;
+                case (int) InputRegisterEnum.OutputEnergy_ChargeLSB:
+                case (int) InputRegisterEnum.OutputEnergy_ChargeMSB:
+                    result.OutputEnergyCharge = GetCombinedValue(raw, InputRegisterEnum.OutputEnergy_ChargeLSB,
+                        InputRegisterEnum.OutputEnergy_ChargeMSB);
                     break;
             }
         }
 
         return result;
     }
+
+    private float GetCombinedValue(IList<InputRegister> raw, InputRegisterEnum enumLsb, InputRegisterEnum enumMsb)
+    {
+        var msb = (ushort) raw.First(f => f.RegisterId == (int) enumMsb).Value;
+        var lsb = (ushort) raw.First(f => f.RegisterId == (int) enumLsb).Value;
+
+        var combinedValue = ((uint) msb << 16) | lsb;
+        var ret = combinedValue * _inputRegisterValueMapPhotovoltaics[@enumLsb];
+        return ret;
+    }
+
 
     private float GetValue(IList<InputRegister> raw, InputRegisterEnum @enum)
     {

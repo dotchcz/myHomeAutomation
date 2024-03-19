@@ -62,10 +62,15 @@ export class PhotovoltaicsComponent implements OnInit {
             this.gridDictionary.push({key: 'gridCurrent [A]', value: photovoltaics.gridCurrent});
             this.gridDictionary.push({key: 'tempInv [C]', value: photovoltaics.temperatureInverter});
             this.gridDictionary.push({key: 'feedInEnergyTotal [kWh]', value: photovoltaics.feedInEnergyTotal});
+            this.gridDictionary.push({key: 'consumeEnergyTotal [kWh]', value: photovoltaics.consumeEnergyTotal});
             this.gridDictionary.push({key: 'offGridPower [W]', value: photovoltaics.offGridPower});
             this.gridDictionary.push({key: 'runMode', value: photovoltaics.runMode});
 
             this.evDictionary.push({key: 'powerToEv', value: photovoltaics.powerToEv});
+            this.evDictionary.push({key: 'inputEnergyCharge [kWh]', value: photovoltaics.inputEnergyCharge});
+            this.evDictionary.push({key: 'outputEnergyCharge [kWh]', value: photovoltaics.outputEnergyCharge});
+            this.evDictionary.push({key: 'inputEnergyChargeToday [kWh]', value: photovoltaics.inputEnergyChargeToday});
+            this.evDictionary.push({key: 'outputEnergyChargeToday [kWh]', value: photovoltaics.outputEnergyChargeToday});
           });
   }
 

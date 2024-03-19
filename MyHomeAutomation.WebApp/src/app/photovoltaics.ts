@@ -16,6 +16,10 @@ export class Photovoltaics {
     temperatureBat: number;
     batteryCapacity: number;
     bmsConnectState: boolean;
+    outputEnergyCharge: number;
+    inputEnergyCharge: number;
+    outputEnergyChargeToday : number;
+    inputEnergyChargeToday : number;
   
     // inverter
     runModeDescription: string;
@@ -25,6 +29,7 @@ export class Photovoltaics {
     temperatureInverter: number;
     feedInPower: number;
     feedInEnergyTotal: number;
+    consumeEnergyTotal: number;
     offGridPower: number;
     runMode: string;
   
@@ -58,7 +63,12 @@ export class Photovoltaics {
       this.offGridPower = 0;
       this.runMode = '';
       this.powerToEv = 0;
-      this.lastUpdate = new Date()
+      this.lastUpdate = new Date(),
+      this.outputEnergyCharge= 0;
+      this.inputEnergyCharge= 0;
+      this.outputEnergyChargeToday= 0;
+      this.inputEnergyChargeToday= 0;
+      this.consumeEnergyTotal = 0;
     }
   }
   

@@ -10,16 +10,16 @@
         <table class="table table-striped">
             <thead>
                 <tr>
-                    <th class="col-8">Name</th>
-                    <th class="col-4">Value</th>
+                    <th class="col-8 text-end">Name</th>
+                    <th class="col-4 text-end">Value</th>
                 </tr>
             </thead>
             <tbody>
                 <tr *ngFor="let item of gridDictionary">
-                    <td>
+                    <td class="text-end">
                         {{item.key}}
                     </td>
-                    <td>
+                    <td class="text-end">
                         {{item.value | safeFormat}}
                     </td>
                 </tr>
@@ -31,16 +31,16 @@
         <table class="table table-striped">
             <thead>
                 <tr>
-                    <th class="col-8">Name</th>
-                    <th class="col-4">Value</th>
+                    <th class="col-8 text-end" >Name</th>
+                    <th class="col-4 text-end">Value</th>
                 </tr>
             </thead>
             <tbody>
                 <tr *ngFor="let item of batteryDictionary">
-                    <td>
+                    <td class="text-end">
                         {{item.key}}
                     </td>
-                    <td>
+                    <td class="text-end">
                         {{item.value | safeFormat}}
                     </td>
                 </tr>
@@ -52,16 +52,16 @@
         <table class="table table-striped">
             <thead>
                 <tr>
-                    <th class="col-8">Name</th>
-                    <th class="col-4">Value</th>
+                    <th class="col-8 text-end">Name</th>
+                    <th class="col-4 text-end">Value</th>
                 </tr>
             </thead>
             <tbody>
                 <tr *ngFor="let item of pvDictionary">
-                    <td>
+                    <td class="text-end">
                         {{item.key}}
                     </td>
-                    <td>
+                    <td class="text-end">
                         {{item.value | safeFormat}}
                     </td>
                 </tr>
@@ -73,16 +73,16 @@
         <table class="table table-striped">
             <thead>
                 <tr>
-                    <th class="col-8">Name</th>
-                    <th class="col-4">Value</th>
+                    <th class="col-8 text-end">Name</th>
+                    <th class="col-4 text-end">Value</th>
                 </tr>
             </thead>
             <tbody>
                 <tr *ngFor="let item of evDictionary">
-                    <td>
+                    <td class="text-end">
                         {{item.key}}
                     </td>
-                    <td>
+                    <td class="text-end">
                         {{item.value | safeFormat}}
                     </td>
                 </tr>
