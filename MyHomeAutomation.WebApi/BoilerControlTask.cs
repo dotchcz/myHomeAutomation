@@ -5,7 +5,7 @@ namespace MyHomeAutomation.WebApi;
 
 public class BoilerControlTask : PeriodTaskBase
 {
-    private const int SoCMacCapacity = 80;
+    private const double SoCMacCapacity = 50;
     private readonly IServiceScopeFactory _serviceScopeFactory;
 
     public BoilerControlTask(ILogger logger, TimeSpan interval, IServiceScopeFactory serviceScopeFactory) 
@@ -30,11 +30,15 @@ public class BoilerControlTask : PeriodTaskBase
         }
         else
         {
-            await Task.Delay(TimeSpan.FromMinutes(10));
+            await Task.Delay(TimeSpan.FromSeconds(10));
             soc = await inputRegisterService.GetSoc();
-            if (soc.ActualCapacity < SoCMacCapacity)
+            if (soc.ActualCapacity < SoCMacCapacity  - 10d)
             {
                 await relayService.SetValue(relay.Ip, false, RelayType.Tasmota); 
+            }
+            else
+            {
+                await relayService.SetValue(relay.Ip, true, RelayType.Tasmota);
             }
         }
     }
