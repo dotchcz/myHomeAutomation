@@ -30,7 +30,7 @@ public class BoilerControlTask : PeriodTaskBase
         }
         else
         {
-            await Task.Delay(TimeSpan.FromSeconds(10));
+            await Task.Delay(TimeSpan.FromMinutes(10));
             soc = await inputRegisterService.GetSoc();
             if (soc.ActualCapacity < SoCMacCapacity  - 10d)
             {
