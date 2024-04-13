@@ -19,24 +19,30 @@ public class InterrogationTask : PeriodTaskBase
     {
         using var scope = _serviceScopeFactory.CreateScope();
         var myHomeAutomationDbContext = scope.ServiceProvider.GetRequiredService<MyHomeAutomationDbContext>();
-        var relayService = scope.ServiceProvider.GetRequiredService<IRelayService>();
+        
+        var relays = await myHomeAutomationDbContext.Relays.Where(r => r.Type == RelayType.Tasmota).ToListAsync()
+            .ConfigureAwait(false);
 
-        var relays = await myHomeAutomationDbContext.Relays.Where(r => r.Type == RelayType.Tasmota).ToListAsync().ConfigureAwait(false);
-
-        foreach (var relay in relays)
+        await Parallel.ForEachAsync(relays, async (relay, cancellationToken) =>
         {
             try
             {
+                using var scopeParallel = _serviceScopeFactory.CreateScope();
+                var relayService = scopeParallel.ServiceProvider.GetRequiredService<IRelayService>();
                 var actualRelay = await relayService.GetRelayStatus(relay.Ip).ConfigureAwait(false);
-
-                await relayService.SetValue(relay!.Ip, actualRelay.Status.Power.Equals("1"), RelayType.Tasmota).ConfigureAwait(false);
+                await relayService.SetValue(relay.Ip, actualRelay.Status.Power.Equals("1"), RelayType.Tasmota)
+                    .ConfigureAwait(false);
             }
-            catch (TaskCanceledException) { }
-            catch (HttpRequestException) { }
+            catch (TaskCanceledException)
+            {
+            }
+            catch (HttpRequestException)
+            {
+            }
             catch (Exception e)
             {
                 _logger.LogError(e, e.Message);
             }
-        }
+        });
     }
 }

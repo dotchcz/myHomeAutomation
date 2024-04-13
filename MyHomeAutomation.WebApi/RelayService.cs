@@ -30,7 +30,7 @@ public class RelayService : IRelayService
         _logger = logger;
         _httpClient = httpClient;
         _serviceScopeFactory = serviceScopeFactory;
-        _httpClient.Timeout = new TimeSpan(0, 0, 2);
+        _httpClient.Timeout = new TimeSpan(0, 0, 5);
     }
 
     public async Task SetValue(string ip, bool active, RelayType type)
@@ -46,6 +46,9 @@ public class RelayService : IRelayService
             await _dbContext.SaveChangesAsync();
         }
         catch (TaskCanceledException)
+        {
+        }
+        catch (HttpRequestException)
         {
         }
         catch (Exception ex)
