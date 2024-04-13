@@ -43,14 +43,10 @@ services:
     ports:
       - "5432:5432"
     volumes:
-      - db:/var/lib/postgresql/data
+      - database/postgres/myHomeAutomation:/var/lib/postgresql/data
     networks:
       - myhomeautomation-dev
   
 networks:
   myhomeautomation-dev:
     name: myhomeautomation-dev
-volumes:
-  db:
-    driver: local
-    
