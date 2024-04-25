@@ -2,6 +2,7 @@ using Microsoft.EntityFrameworkCore;
 using MyHomeAutomation.WebApi;
 using MyHomeAutomation.WebApi.ApiModels;
 using MyHomeAutomation.WebApi.Models;
+using Polly;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -25,7 +26,14 @@ builder.Services.AddScoped<IInputRegisterService, InputRegisterService>();
 builder.Services.AddHostedService<RegulatoryService>();
 builder.Services.AddHostedService<InterrogationService>();
 builder.Services.AddHostedService<BoilerControlService>();
-builder.Services.AddHttpClient();
+builder.Services.AddHttpClient("myHomeAutomationClient",
+        client => { client.Timeout = TimeSpan.FromSeconds(2); })
+    //.AddTransientHttpErrorPolicy(policyBuilder => policyBuilder.RetryAsync(5)); // nice option
+    .AddPolicyHandler(Policy<HttpResponseMessage>
+        .Handle<HttpRequestException>()
+        .Or<TaskCanceledException>()
+        .RetryAsync(5));
+
 builder.Services.AddLogging();
 
 var app = builder.Build();
@@ -134,7 +142,7 @@ app.MapGet("/relays",
         async (CancellationToken cancellationToken, MyHomeAutomationDbContext dbContext) =>
             Results.Ok(
                 await dbContext.Relays
-                    .Where(r=> !r.IsExtendingButton)
+                    .Where(r => !r.IsExtendingButton)
                     .OrderByDescending(r => r.Name)
                     .ToListAsync(cancellationToken)
                     .ConfigureAwait(false)
@@ -145,7 +153,7 @@ app.MapGet("/relaysExtending",
         async (CancellationToken cancellationToken, MyHomeAutomationDbContext dbContext) =>
             Results.Ok(
                 await dbContext.Relays
-                    .Where(r=> r.IsExtendingButton)
+                    .Where(r => r.IsExtendingButton)
                     .OrderByDescending(r => r.Name)
                     .ToListAsync(cancellationToken)
                     .ConfigureAwait(false)
@@ -185,6 +193,7 @@ app.MapPost("/relays",
                 relay = new Relay() {Id = relayRequest.Id, Name = relayRequest.Name};
                 await dbContext.Relays.AddAsync(relay).ConfigureAwait(false);
             }
+
             await relayService.SetValue(relay.Ip, relayRequest.Active, relay.Type);
 
             return Results.NoContent();

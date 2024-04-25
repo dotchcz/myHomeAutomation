@@ -3,6 +3,7 @@ using MyHomeAutomation.WebApi.ApiModels;
 using MyHomeAutomation.WebApi.Dto;
 using MyHomeAutomation.WebApi.Enums;
 using Newtonsoft.Json;
+using Polly;
 
 namespace MyHomeAutomation.WebApi;
 
@@ -11,8 +12,7 @@ public class RelayService : IRelayService
     private readonly MyHomeAutomationDbContext _dbContext;
     private readonly ILogger<RelayService> _logger;
     private readonly HttpClient _httpClient;
-    private readonly IServiceScopeFactory _serviceScopeFactory;
-
+    
     private readonly Func<string, bool, RelayType, Uri> _urlMapping = (ip, active, type) =>
     {
         return type switch
@@ -23,14 +23,11 @@ public class RelayService : IRelayService
         };
     };
 
-    public RelayService(MyHomeAutomationDbContext dbContext, ILogger<RelayService> logger, HttpClient httpClient,
-        IServiceScopeFactory serviceScopeFactory)
+    public RelayService(MyHomeAutomationDbContext dbContext, ILogger<RelayService> logger, IHttpClientFactory httpClientFactory)
     {
         _dbContext = dbContext;
         _logger = logger;
-        _httpClient = httpClient;
-        _serviceScopeFactory = serviceScopeFactory;
-        _httpClient.Timeout = new TimeSpan(0, 0, 5);
+        _httpClient = httpClientFactory.CreateClient("myHomeAutomationClient");
     }
 
     public async Task SetValue(string ip, bool active, RelayType type)
@@ -39,7 +36,7 @@ public class RelayService : IRelayService
         {
             var uri = _urlMapping(ip, active, type);
             await _httpClient.GetAsync(uri).ConfigureAwait(false);
-
+            
             var relay = await _dbContext.Relays.FirstAsync(r => r.Ip.Equals(ip)).ConfigureAwait(false);
             relay.Active = active;
             relay.LastUpdate = DateTime.UtcNow;
@@ -77,7 +74,7 @@ public class RelayService : IRelayService
                 await Task.Delay(timeSpan);
                 uri = _urlMapping(relay!.Ip, !request.Active, relay.Type);
                 await _httpClient.GetAsync(uri).ConfigureAwait(false);
-                
+
                 relay!.Active = !request.Active;
                 relay.LastUpdate = DateTime.UtcNow;
                 await _dbContext.SaveChangesAsync();
