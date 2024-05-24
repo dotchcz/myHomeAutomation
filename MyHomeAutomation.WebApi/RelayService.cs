@@ -3,7 +3,6 @@ using MyHomeAutomation.WebApi.ApiModels;
 using MyHomeAutomation.WebApi.Dto;
 using MyHomeAutomation.WebApi.Enums;
 using Newtonsoft.Json;
-using Polly;
 
 namespace MyHomeAutomation.WebApi;
 
@@ -12,7 +11,7 @@ public class RelayService : IRelayService
     private readonly MyHomeAutomationDbContext _dbContext;
     private readonly ILogger<RelayService> _logger;
     private readonly HttpClient _httpClient;
-    
+
     private readonly Func<string, bool, RelayType, Uri> _urlMapping = (ip, active, type) =>
     {
         return type switch
@@ -23,7 +22,8 @@ public class RelayService : IRelayService
         };
     };
 
-    public RelayService(MyHomeAutomationDbContext dbContext, ILogger<RelayService> logger, IHttpClientFactory httpClientFactory)
+    public RelayService(MyHomeAutomationDbContext dbContext, ILogger<RelayService> logger,
+        IHttpClientFactory httpClientFactory)
     {
         _dbContext = dbContext;
         _logger = logger;
@@ -36,9 +36,32 @@ public class RelayService : IRelayService
         {
             var uri = _urlMapping(ip, active, type);
             await _httpClient.GetAsync(uri).ConfigureAwait(false);
-            
+
             var relay = await _dbContext.Relays.FirstAsync(r => r.Ip.Equals(ip)).ConfigureAwait(false);
             relay.Active = active;
+            relay.LastUpdate = DateTime.UtcNow;
+            await _dbContext.SaveChangesAsync();
+        }
+        catch (TaskCanceledException)
+        {
+        }
+        catch (HttpRequestException)
+        {
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, ex.Message);
+        }
+    }
+
+    public async Task UpdateDateTime(string ip)
+    {
+        try
+        {
+            var url = new Uri("http://" + ip);
+            await _httpClient.GetAsync(url);
+
+            var relay = await _dbContext.Relays.FirstAsync(r => r.Ip.Equals(ip)).ConfigureAwait(false);
             relay.LastUpdate = DateTime.UtcNow;
             await _dbContext.SaveChangesAsync();
         }
@@ -103,6 +126,7 @@ public class RelayService : IRelayService
 public interface IRelayService
 {
     Task SetValue(string ip, bool active, RelayType type);
+    Task UpdateDateTime(string ip);
     Task SetValueExtending(RelayRequest request);
     Task<TasmotaRelayDto> GetRelayStatus(string ip);
 }

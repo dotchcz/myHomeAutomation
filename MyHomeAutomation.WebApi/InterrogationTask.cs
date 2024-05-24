@@ -20,10 +20,11 @@ public class InterrogationTask : PeriodTaskBase
         using var scope = _serviceScopeFactory.CreateScope();
         var myHomeAutomationDbContext = scope.ServiceProvider.GetRequiredService<MyHomeAutomationDbContext>();
         
-        var relays = await myHomeAutomationDbContext.Relays.Where(r => r.Type == RelayType.Tasmota).ToListAsync()
+        var relays = await myHomeAutomationDbContext.Relays.ToListAsync()
             .ConfigureAwait(false);
 
-        await Parallel.ForEachAsync(relays, async (relay, cancellationToken) =>
+        // Tasmota
+        await Parallel.ForEachAsync(relays.Where(r => r.Type == RelayType.Tasmota), async (relay, cancellationToken) =>
         {
             try
             {
@@ -32,6 +33,27 @@ public class InterrogationTask : PeriodTaskBase
                 var actualRelay = await relayService.GetRelayStatus(relay.Ip).ConfigureAwait(false);
                 await relayService.SetValue(relay.Ip, actualRelay.Status.Power.Equals("1"), RelayType.Tasmota)
                     .ConfigureAwait(false);
+            }
+            catch (TaskCanceledException)
+            {
+            }
+            catch (HttpRequestException)
+            {
+            }
+            catch (Exception e)
+            {
+                _logger.LogError(e, e.Message);
+            }
+        });
+        
+        // Wemos
+        await Parallel.ForEachAsync(relays.Where(r => r.Type == RelayType.Wemos), async (relay, cancellationToken) =>
+        {
+            try
+            {
+                using var scopeParallel = _serviceScopeFactory.CreateScope();
+                var relayService = scopeParallel.ServiceProvider.GetRequiredService<IRelayService>();
+                await relayService.UpdateDateTime(relay.Ip).ConfigureAwait(false);
             }
             catch (TaskCanceledException)
             {
