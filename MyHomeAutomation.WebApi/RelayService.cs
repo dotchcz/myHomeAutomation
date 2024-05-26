@@ -1,6 +1,5 @@
 using Microsoft.EntityFrameworkCore;
 using MyHomeAutomation.WebApi.ApiModels;
-using MyHomeAutomation.WebApi.Dto;
 using MyHomeAutomation.WebApi.Enums;
 using Newtonsoft.Json;
 
@@ -12,12 +11,22 @@ public class RelayService : IRelayService
     private readonly ILogger<RelayService> _logger;
     private readonly HttpClient _httpClient;
 
-    private readonly Func<string, bool, RelayType, Uri> _urlMapping = (ip, active, type) =>
+    private readonly Func<string, bool, RelayType, Uri> _urlMappingSet = (ip, active, type) =>
     {
         return type switch
         {
             RelayType.Wemos => new Uri($"http://{ip}/LED=" + (active ? "ON" : "OFF")),
             RelayType.Tasmota => new Uri($"http://{ip}/cm?cmnd=Power%20" + (active ? "On" : "Off")),
+            _ => throw new ArgumentException($"RelayService: Unknown type value {type}")
+        };
+    };
+    
+    private readonly Func<string, RelayType, Uri> _urlMappingGet = (ip, type) =>
+    {
+        return type switch
+        {
+            RelayType.Wemos => new Uri($"http://{ip}"),
+            RelayType.Tasmota => new Uri($"http://{ip}/cm?cmnd=status%200"),
             _ => throw new ArgumentException($"RelayService: Unknown type value {type}")
         };
     };
@@ -34,10 +43,10 @@ public class RelayService : IRelayService
     {
         try
         {
-            var uri = _urlMapping(ip, active, type);
+            var uri = _urlMappingSet(ip, active, type);
             await _httpClient.GetAsync(uri).ConfigureAwait(false);
 
-            var relay = await _dbContext.Relays.FirstAsync(r => r.Ip.Equals(ip)).ConfigureAwait(false);
+            var relay = await _dbContext.Relays.FirstAsync(r => r.Ip.Equals(ip));
             relay.Active = active;
             relay.LastUpdate = DateTime.UtcNow;
             await _dbContext.SaveChangesAsync();
@@ -53,39 +62,16 @@ public class RelayService : IRelayService
             _logger.LogError(ex, ex.Message);
         }
     }
-
-    public async Task UpdateDateTime(string ip)
-    {
-        try
-        {
-            var url = new Uri("http://" + ip);
-            await _httpClient.GetAsync(url);
-
-            var relay = await _dbContext.Relays.FirstAsync(r => r.Ip.Equals(ip)).ConfigureAwait(false);
-            relay.LastUpdate = DateTime.UtcNow;
-            await _dbContext.SaveChangesAsync();
-        }
-        catch (TaskCanceledException)
-        {
-        }
-        catch (HttpRequestException)
-        {
-        }
-        catch (Exception ex)
-        {
-            _logger.LogError(ex, ex.Message);
-        }
-    }
-
+    
     public async Task SetValueExtending(RelayRequest request)
     {
         try
         {
             var relay = await _dbContext.Relays.FindAsync(request.Id);
 
-            var uri = _urlMapping(relay!.Ip, request.Active, relay.Type);
+            var uri = _urlMappingSet(relay!.Ip, request.Active, relay.Type);
 
-            await _httpClient.GetAsync(uri).ConfigureAwait(false);
+            await _httpClient.GetAsync(uri);
 
             relay!.Active = request.Active;
             relay.LastUpdate = DateTime.UtcNow;
@@ -95,8 +81,8 @@ public class RelayService : IRelayService
             {
                 var timeSpan = relay!.Delay ?? TimeSpan.FromMinutes(5);
                 await Task.Delay(timeSpan);
-                uri = _urlMapping(relay!.Ip, !request.Active, relay.Type);
-                await _httpClient.GetAsync(uri).ConfigureAwait(false);
+                uri = _urlMappingSet(relay!.Ip, !request.Active, relay.Type);
+                await _httpClient.GetAsync(uri);
 
                 relay!.Active = !request.Active;
                 relay.LastUpdate = DateTime.UtcNow;
@@ -112,21 +98,18 @@ public class RelayService : IRelayService
         }
     }
 
-    public async Task<TasmotaRelayDto> GetRelayStatus(string ip)
+    public async Task<T> GetRelayStatus<T>(string ip, RelayType relayType)
     {
-        var uri = new Uri($"http://{ip}/cm?cmnd=status%200");
-        var res = await _httpClient.GetAsync(uri).ConfigureAwait(false);
-
-        string responseBody = await res.Content.ReadAsStringAsync().ConfigureAwait(false);
-
-        return JsonConvert.DeserializeObject<TasmotaRelayDto>(responseBody)!;
+        var uri = _urlMappingGet(ip, relayType);
+        var res = await _httpClient.GetAsync(uri);
+        string responseBody = await res.Content.ReadAsStringAsync();
+        return JsonConvert.DeserializeObject<T>(responseBody)!;
     }
 }
 
 public interface IRelayService
 {
     Task SetValue(string ip, bool active, RelayType type);
-    Task UpdateDateTime(string ip);
     Task SetValueExtending(RelayRequest request);
-    Task<TasmotaRelayDto> GetRelayStatus(string ip);
+    Task<T> GetRelayStatus<T>(string ip, RelayType relayType);
 }

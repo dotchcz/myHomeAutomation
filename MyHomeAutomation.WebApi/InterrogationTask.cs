@@ -1,4 +1,5 @@
 using Microsoft.EntityFrameworkCore;
+using MyHomeAutomation.WebApi.Dto;
 using MyHomeAutomation.WebApi.Enums;
 
 namespace MyHomeAutomation.WebApi;
@@ -20,19 +21,17 @@ public class InterrogationTask : PeriodTaskBase
         using var scope = _serviceScopeFactory.CreateScope();
         var myHomeAutomationDbContext = scope.ServiceProvider.GetRequiredService<MyHomeAutomationDbContext>();
         
-        var relays = await myHomeAutomationDbContext.Relays.ToListAsync()
-            .ConfigureAwait(false);
+        var relays = await myHomeAutomationDbContext.Relays.ToListAsync();
 
         // Tasmota
-        await Parallel.ForEachAsync(relays.Where(r => r.Type == RelayType.Tasmota), async (relay, cancellationToken) =>
+        await Parallel.ForEachAsync(relays.Where(r => r.Type == RelayType.Tasmota), async (relay, _) =>
         {
             try
             {
                 using var scopeParallel = _serviceScopeFactory.CreateScope();
                 var relayService = scopeParallel.ServiceProvider.GetRequiredService<IRelayService>();
-                var actualRelay = await relayService.GetRelayStatus(relay.Ip).ConfigureAwait(false);
-                await relayService.SetValue(relay.Ip, actualRelay.Status.Power.Equals("1"), RelayType.Tasmota)
-                    .ConfigureAwait(false);
+                var actualRelay = await relayService.GetRelayStatus<TasmotaRelayDto>(relay.Ip, RelayType.Tasmota);
+                await relayService.SetValue(relay.Ip, actualRelay.Status.Power.Equals("1"), RelayType.Tasmota);
             }
             catch (TaskCanceledException)
             {
@@ -47,13 +46,14 @@ public class InterrogationTask : PeriodTaskBase
         });
         
         // Wemos
-        await Parallel.ForEachAsync(relays.Where(r => r.Type == RelayType.Wemos), async (relay, cancellationToken) =>
+        await Parallel.ForEachAsync(relays.Where(r => r.Type == RelayType.Wemos), async (relay, _) =>
         {
             try
             {
                 using var scopeParallel = _serviceScopeFactory.CreateScope();
                 var relayService = scopeParallel.ServiceProvider.GetRequiredService<IRelayService>();
-                await relayService.UpdateDateTime(relay.Ip).ConfigureAwait(false);
+                var actualRelay = await relayService.GetRelayStatus<RelayStatusDto>(relay.Ip, RelayType.Wemos);
+                await relayService.SetValue(relay.Ip, actualRelay.Active, RelayType.Wemos);
             }
             catch (TaskCanceledException)
             {
